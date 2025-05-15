@@ -1,35 +1,25 @@
-name: Deploy to VM
+name: Deploy naar Azure VM
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    
+name: Repo klonen
+    uses: actions/checkout@v3,
 
-    - name: Copy code to VM via SSH
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        password: ${{ secrets.VM_PASS }}
-        source: "."
-        target: "/home/groep2/Dev-Ops-B2C6"
-
-    - name: Restart app via SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        password: ${{ secrets.VM_PASS }}
-        script: |
-          cd Dev-Ops-B2C6/backend
-          pkill -f "python3 app.py" || true
-          source venv/bin/activate
-          nohup python3 app.py > ~/backend.log 2>&1 &
+    
+name: SSH naar Azure VM en voer Ansible uit
+    uses: appleboy/ssh-action@v0.1.6
+    with:
+      host: ${{ secrets.VM_HOST }}
+      username: ${{ secrets.VM_USER }}
+      password: ${{ secrets.VM_PASSWORD }}
+      script: |
+        cd ~/ansible
+        ansible-playbook -i hosts deploy.yml
