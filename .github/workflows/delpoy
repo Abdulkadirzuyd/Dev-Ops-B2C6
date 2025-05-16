@@ -2,7 +2,7 @@ name: Deploy naar Azure VM
 
 on:
   push:
-    branches: [owen]
+    branches: [ main ]
 
 jobs:
   deploy:
