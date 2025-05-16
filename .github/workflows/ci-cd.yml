@@ -2,7 +2,7 @@ name: Deploy React + Flask via Docker
 
 on:
   push:
-    branches: [ main ]
+    branches: [ owen ]
 
 jobs:
   deploy:
