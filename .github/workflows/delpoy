@@ -2,7 +2,7 @@ name: Deploy naar Azure VM
 
 on:
   push:
-    branches: [abdul]
+    branches: [owen]
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          port: 22s
+          port: 22
           script: |
             cd ~/ansible
             ansible-playbook deploy.yml
