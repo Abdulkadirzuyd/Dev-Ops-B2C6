@@ -10,11 +10,7 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
-<<<<<<< HEAD
-EXPOSE 80
-=======
 # Expose poort 80
 EXPOSE 80
 
->>>>>>> 37e6292 (Ignore .vs and push frontend changes)
 CMD ["nginx", "-g", "daemon off;"]

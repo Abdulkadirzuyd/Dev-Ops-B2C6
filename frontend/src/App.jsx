@@ -9,7 +9,7 @@ function App() {
 
     // Zodra de app wordt geladen, haal het bericht op uit Flask
     useEffect(() => {
-        fetch('/api/hello')
+        fetch('http://172.201.187.117:5000/api/hello')
             .then((res) => res.json())
             .then((data) => setMessage(data.message))
             .catch((err) => console.error('Fout bij ophalen API:', err))
@@ -25,7 +25,7 @@ function App() {
                     <img src={reactLogo} className="logo react" alt="React logo" />
                 </a>
             </div>
-            <h1>Vite + React</h1>
+            <h1>Test</h1>
             <div className="card">
                 <button onClick={() => setCount((count) => count + 1)}>
                     count is {count}
