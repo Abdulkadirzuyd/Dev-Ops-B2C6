@@ -9,7 +9,7 @@ function App() {
 
     // Zodra de app wordt geladen, haal het bericht op uit Flask
     useEffect(() => {
-        fetch('localhost:5000/api/hello')
+        fetch('172.201.187.117:5000/api/hello')
             .then((res) => res.json())
             .then((data) => setMessage(data.message))
             .catch((err) => console.error('Fout bij ophalen API:', err))
