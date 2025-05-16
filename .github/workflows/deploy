@@ -1,0 +1,26 @@
+name: Deploy naar Azure VM
+
+on:
+  push:
+    branches: [abdul2.0]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: SSH naar Azure VM en voer Ansible uit
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          port: 22s
+          script: |
+            cd ~/ansible
+            ansible-playbook deploy.yml
+
+
