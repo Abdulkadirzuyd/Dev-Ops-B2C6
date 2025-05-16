@@ -13,5 +13,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Expose poort 80
 EXPOSE 80
 
->>>>>>> 37e6292 (Ignore .vs and push frontend changes)
 CMD ["nginx", "-g", "daemon off;"]
