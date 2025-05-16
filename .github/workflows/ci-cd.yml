@@ -19,6 +19,13 @@ jobs:
           username: ${{ secrets.AZURE_VM_USERNAME }}
           password: ${{ secrets.AZURE_VM_PASSWORD }}
           script: |
-            cd /path/to/project-folder
+            PROJECT_DIR="/home/${{ secrets.AZURE_VM_USERNAME }}/project-folder"
+
+            if [ ! -d "$PROJECT_DIR/.git" ]; then
+              git clone https://github.com/${{ github.repository }} $PROJECT_DIR
+            fi
+
+            cd $PROJECT_DIR
             git pull origin owen
-            docker compose up -d --build
+
+            docker-compose up -d --build
