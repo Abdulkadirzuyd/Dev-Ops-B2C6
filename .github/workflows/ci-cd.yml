@@ -2,7 +2,7 @@ name: Deploy React + Flask via Docker
 
 on:
   push:
-    branches: [ owen ]
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -26,7 +26,7 @@ jobs:
             fi
 
             cd $PROJECT_DIR
-            git pull origin owen
+            git pull origin main
 
             echo "Stopping and removing existing containers..."
             sudo docker-compose down
