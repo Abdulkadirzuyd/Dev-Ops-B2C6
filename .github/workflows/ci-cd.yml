@@ -28,4 +28,8 @@ jobs:
             cd $PROJECT_DIR
             git pull origin owen
 
+            echo "Stopping and removing existing containers..."
+            sudo docker-compose down
+
+            echo "Building and starting containers..."
             sudo docker-compose up -d --build
