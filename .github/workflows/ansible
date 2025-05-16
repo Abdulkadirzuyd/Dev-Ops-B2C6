@@ -18,8 +18,9 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          port: 22
+          port: 22s
           script: |
             cd ~/ansible
             ansible-playbook deploy.yml
 
+ededwdwdwdw
