@@ -15,5 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # Start de app
->>>>>>> 37e6292 (Ignore .vs and push frontend changes)
 CMD ["python", "app.py"]
