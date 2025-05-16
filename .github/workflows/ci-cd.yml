@@ -20,5 +20,5 @@ jobs:
           password: ${{ secrets.AZURE_VM_PASSWORD }}
           script: |
             cd /path/to/project-folder
-            git pull origin main
+            git pull origin owen
             docker compose up -d --build
