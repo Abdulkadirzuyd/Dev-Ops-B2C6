@@ -1,14 +1,16 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "5000:5000"
-
   frontend:
-    build:
-      context: ./frontend/frontend
+    build: ./frontend
     ports:
       - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    restart: always
