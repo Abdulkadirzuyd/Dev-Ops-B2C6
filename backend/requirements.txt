@@ -1,5 +1,5 @@
 ﻿blinker
-click=
+click
 colorama
 Flask
 flask-cors
