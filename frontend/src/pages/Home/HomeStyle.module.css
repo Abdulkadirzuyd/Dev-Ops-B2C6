@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* Verticaal centreren */
+  align-items: center;       /* Horizontaal centreren */
+  min-height: 100vh;         /* Volledige viewporthoogte */
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;  /* Zet de buttons onder elkaar */
+  gap: 1rem;               /* Ruimte tussen de buttons */
+  margin-top: 1rem;
+  align-items: center;     /* Optioneel: buttons horizontaal centreren */
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 200px;            /* Optioneel: vaste breedte */
+}
+
+.logo {
+  width: 400px; /* Pas dit aan zoals gewenst */
+  height: auto; /* Behoudt de verhoudingen van de afbeelding */
+  margin-bottom: 20px;
+  border-radius: 5rem;
+}

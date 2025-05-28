@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import OrderControl from "./pages/OrderControl";
+import HomePage from "./pages/Home/HomePage";
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/order" element={<OrderControl />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
