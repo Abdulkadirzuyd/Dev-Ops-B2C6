@@ -1,9 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './HomeStyle.module.css';
 import logo from '../../assets/banaanlogo.png';
+import { useEffect } from 'react';
 
 export default function HomePage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Scroll uitschakelen
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      // Scroll weer inschakelen als je van de pagina af gaat
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
