@@ -1,0 +1,7 @@
+.storage-container {
+  display: flex;
+  height: 100vh;
+  background-color: #464c56;
+  align-items: center;      /* verticaal */
+  justify-content: center;  /* horizontaal */
+}
