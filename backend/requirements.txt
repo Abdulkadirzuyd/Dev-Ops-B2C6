@@ -1,5 +1,4 @@
 ﻿blinker
-click=
 colorama
 Flask
 flask-cors
@@ -9,3 +8,4 @@ Jinja2
 MarkupSafe
 Werkzeug
 zipp
+Flask-SQLAlchemy
