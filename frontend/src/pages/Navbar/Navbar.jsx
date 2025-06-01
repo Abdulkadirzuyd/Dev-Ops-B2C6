@@ -25,6 +25,12 @@ export default function Navbar() {
         >
           Registreer
         </NavLink>
+        <NavLink 
+          to="/purchasing" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Inkoop
+        </NavLink>
       </div>
     </nav>
   );
