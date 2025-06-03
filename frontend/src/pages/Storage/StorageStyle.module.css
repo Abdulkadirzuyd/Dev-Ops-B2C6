@@ -1,30 +1,65 @@
 .storageContainer {
   display: flex;
-  justify-content: center;   /* Horizontaal centreren */
-  align-items: center;       /* Verticaal centreren */
-  height: 100vh;             /* Volledige hoogte van het scherm */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+
 }
 
 .controls {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .button {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  background-color: #e81a31;
-  color: white;
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  color: white;
 }
 
 .button:hover {
-  background-color: #ffffff00;
-  border: 2px solid;
-  color: #e81a31;
+  border-color: rgba(255, 255, 255, 0);
+}
+
+.grey {
+  background-color: grey;
+}
+
+.blue {
+  background-color: #1e90ff;
+}
+
+.red {
+  background-color: #e81a31;
+}
+
+.active {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  border-color: black;
+}
+
+.table {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tableHeader,
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.tableHeader {
+  font-weight: bold;
 }
