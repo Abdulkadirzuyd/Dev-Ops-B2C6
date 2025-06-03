@@ -9,8 +9,7 @@ const StoragePage = () => {
       <div className="content">
         <div className="topbar">
           <h1 className="title">Voorraadbeheer</h1>
-          <input className="small-input" />
-          <input className="small-input" />
+          <input className="small-input" placeholder="Blok Grijs, Rood of Blauw" />
         </div>
 
         <div className="controls">
@@ -26,7 +25,6 @@ const StoragePage = () => {
             <div>Productnaam</div>
             <div>Voorraad</div>
             <div>Besteld</div>
-            <div>Gereserveerd</div>
           </div>
           {[...Array(13)].map((_, i) => (
             <div className="table-row" key={i}></div>
