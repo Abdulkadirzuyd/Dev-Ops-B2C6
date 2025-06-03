@@ -22,11 +22,17 @@
   cursor: pointer;
   width: 200px;
   transition: transform 0.5s ease;
+  background-color: #e81a31;
+  color: white;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .button:hover {
-  transform: scale(1.1); 
-}
+    background-color: #ffffff00;
+    border: 2px solid;
+    color: #e81a31;
+    transform: scale(1.05);
+  }
 
 .logo {
   width: 300px; 

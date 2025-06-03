@@ -26,8 +26,6 @@
     border-radius: 6px;
     border: 1px solid #555;
     font-size: 1rem;
-    background-color: #1a1a1a;
-    color: white;
     outline: none;
     transition: border-color 0.25s;
   }
@@ -42,15 +40,16 @@
     font-size: 1.1rem;
     border-radius: 8px;
     border: none;
-    background-color: #000000;
+    background-color: #e81a31;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
   }
   
   .button:hover {
-    background-color: #ffc400;
-    color: black;
+    background-color: #ffffff00;
+    border: 2px solid;
+    color: #e81a31;
     transform: scale(1.05);
   }
   

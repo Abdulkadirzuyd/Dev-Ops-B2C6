@@ -1,7 +1,24 @@
-.storage-container {
+.storageContainer {
   display: flex;
-  height: 100vh;
-  background-color: #464c56;
-  align-items: center;      /* verticaal */
-  justify-content: center;  /* horizontaal */
+  justify-content: center;   /* Horizontaal centreren */
+  align-items: center;       /* Verticaal centreren */
+  height: 100vh;             /* Volledige hoogte van het scherm */
+}
+
+.button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 2px solid;
+  background-color: #e81a31;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button:hover {
+  background-color: #ffffff00;
+  border: 2px solid;
+  color: #e81a31;
 }
