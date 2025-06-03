@@ -25,6 +25,12 @@ export default function Navbar() {
         >
           Registreer
         </NavLink>
+        <NavLink 
+          to="/storage" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Voorraad
+        </NavLink>
       </div>
     </nav>
   );

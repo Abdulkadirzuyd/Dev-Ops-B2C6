@@ -1,0 +1,65 @@
+.storageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  color: white;
+}
+
+.button:hover {
+  border-color: rgba(255, 255, 255, 0);
+}
+
+.grey {
+  background-color: grey;
+}
+
+.blue {
+  background-color: #1e90ff;
+}
+
+.red {
+  background-color: #e81a31;
+}
+
+.active {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  border-color: black;
+}
+
+.table {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tableHeader,
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.tableHeader {
+  font-weight: bold;
+}
