@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ⬅️ importeer deze
 import styles from './LoginStyle.module.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // ⬅️ gebruik de hook
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Hier kun je inloggen verwerken, bv. API-call
-    alert(`Inloggen met:\nEmail: ${email}\nWachtwoord: ${password}`);
+
+    // Simuleer een succesvolle login en navigeer naar de homepagina // ALLEEN VOOR DEVELOPMENT
+    navigate('/home', { replace: true }); // ⬅️ vervangt /login in de browsergeschiedenis
   };
 
   return (

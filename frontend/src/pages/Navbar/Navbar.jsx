@@ -25,6 +25,24 @@ export default function Navbar() {
         >
           Registreer
         </NavLink>
+        <NavLink 
+          to="/purchasing" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Inkoop
+        </NavLink>
+        <NavLink 
+          to="/storage" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Voorraad
+        </NavLink>
+        <NavLink 
+          to="/order" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Orders
+        </NavLink>
       </div>
     </nav>
   );

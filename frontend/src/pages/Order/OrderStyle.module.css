@@ -1,0 +1,143 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 2rem;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Formulier styling */
+.form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+}
+
+.input,
+.select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  min-width: 120px;
+  background-color: #f9f9f9;  /*zelfde als tabel achtergrond*/
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.4); /* licht grijs placeholder */
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  background-color: #e6e6e6; /* iets donkerder bij focus */
+}
+
+.select {
+  cursor: pointer;
+}
+
+.button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #1976d2; /* blauwe button */
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  background-color: #115293; /* donkerder blauw */
+}
+
+/* Tabel styling */
+.tableContainer {
+  width: 100%;
+  max-width: 900px;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #ccc;
+  color: black;
+}
+
+.leftGroup,
+.rightGroup {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* Pas de breedte van kolommen aan */
+.leftGroup > div {
+  min-width: 60px;
+  text-align: center;
+}
+
+.rightGroup > div {
+  min-width: 120px;
+  text-align: center;
+}
+
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.tableRow:nth-child(even) {
+  background-color: #e6e6e6;
+}
+
+/* Checkmark styling */
+.check {
+  color: #2ecc71;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Actieknoppen binnen tabel */
+.tableRow button {
+  background-color: #FFF1F3;
+  border-radius: 8px;
+  border: none;
+  padding: 0.3rem 0.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: black;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.tableRow button:hover {
+  background-color: #FFC5CC;
+  transform: scale(1.05);
+}
