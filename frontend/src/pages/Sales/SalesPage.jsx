@@ -1,8 +1,8 @@
 // Imports
-import styles from './VerkoopStyle.module.css';
+import styles from './SalesStyle.module.css';
 
 // Component: VerkoopPage
-export default function VerkoopPage() {
+export default function SalesPage() {
   return (
     <div className={styles.container}>
 

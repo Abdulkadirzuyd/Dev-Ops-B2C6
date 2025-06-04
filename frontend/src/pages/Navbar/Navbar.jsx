@@ -37,6 +37,12 @@ export default function Navbar() {
         >
           Voorraad
         </NavLink>
+        <NavLink 
+          to="/order" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Orders
+        </NavLink>
       </div>
     </nav>
   );
