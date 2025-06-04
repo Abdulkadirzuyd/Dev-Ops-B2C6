@@ -13,44 +13,51 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #747474;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh; /* Volledige hoogte */
+  width: 220px; /* Sidebar breedte */
+  background-color: #333333;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
+.navbar a {
+  color: #ccc;
+  text-decoration: none;
+  padding: 12px 8px;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  background-color: #535bf2; 
+  color: white;
+}
+
+.main-content {
+   flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: inherit;
+  color: inherit;
+}
+
+.centered-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 100%;
   min-height: 100vh;
-}
-
-
-h1 {
-  font-size: 2em;
-  line-height: .5;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #000000;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #e81a31;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -64,4 +71,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-} 
+
+  /* lichte navbar */
+  .navbar {
+    background-color: #f0f0f0;
+  }
+  .navbar a {
+    color: #444;
+  }
+  .navbar a:hover,
+  .navbar a.active {
+    background-color: #747bff;
+    color: white;
+  }
+}
