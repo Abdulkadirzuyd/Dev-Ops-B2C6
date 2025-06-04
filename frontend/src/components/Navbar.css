@@ -1,0 +1,22 @@
+.navbar {
+  height: 100vh;
+  width: 220px;
+  background-color: #333333;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navbar-logo img {
+  width: 200px;
+  height: auto;
+  border-radius: 15%;
+}
