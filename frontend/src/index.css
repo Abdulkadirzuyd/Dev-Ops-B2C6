@@ -13,35 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh; /* Volledige hoogte */
-  width: 220px; /* Sidebar breedte */
-  background-color: #333333;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.navbar a {
-  color: #ccc;
-  text-decoration: none;
-  padding: 12px 8px;
-  font-weight: 500;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.navbar a:hover,
-.navbar a.active {
-  background-color: #535bf2; 
-  color: white;
-}
-
 .main-content {
    flex: 1;
   padding: 20px;
@@ -70,18 +41,5 @@
   }
   button {
     background-color: #f9f9f9;
-  }
-
-  /* lichte navbar */
-  .navbar {
-    background-color: #f0f0f0;
-  }
-  .navbar a {
-    color: #444;
-  }
-  .navbar a:hover,
-  .navbar a.active {
-    background-color: #747bff;
-    color: white;
   }
 }

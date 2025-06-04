@@ -9,10 +9,10 @@ function Navbar() {
         <img src={logo} alt="Logo" />
       </div>
       <NavLink to="/home" end>Home</NavLink>
-      <NavLink to="/purchasing">Purchasing</NavLink>
+      <NavLink to="/customerSimulation">Customer</NavLink>
+      <NavLink to="/order">Orders</NavLink>
       <NavLink to="/storage">Storage</NavLink>
-      <NavLink to="/login">Login</NavLink>
-      <NavLink to="/register">Register</NavLink>
+      <NavLink to="/sales">Sales</NavLink>
     </nav>
   );
 }

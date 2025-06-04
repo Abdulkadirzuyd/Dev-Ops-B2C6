@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import RegisterPage from "./pages/Register/RegisterPage";
 import Navbar from "./components/Navbar";
-import Purchasing from "./pages/Purchasing/Purchasing";
 import StoragePage from "./pages/Storage/StoragePage";
 import StartupPage from "./pages/Startup/StartupPage";
 import HomePage from "./pages/Home/HomePage";
+import SalesPage from "./pages/Sales/SalesPage"
+import OrderPage from "./pages/Order/OrderControl";
+import CustomerSimulationPage from "./pages/CustomerSimulation/CustomerSimulationPage";
 
 function AppContent() {
   const location = useLocation();
@@ -21,10 +23,12 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<StartupPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/purchasing" element={<Purchasing />} />
+          <Route path="/customerSimulation" element={<CustomerSimulationPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/storage" element={<StoragePage />} />
+          <Route path="/sales" element={<SalesPage />} />
+          <Route path="/order" element={<OrderPage />} />
         </Routes>
       </div>
     </div>

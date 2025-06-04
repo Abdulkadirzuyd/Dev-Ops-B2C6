@@ -1,11 +1,12 @@
 .navbar {
   height: 100vh;
   width: 220px;
-  background-color: #333333;
+  background-color: #ffffff; /* wit */
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
+  border-right: 1px solid #ccc; /* grijze rand rechts */
 }
 
 .navbar-logo {
@@ -19,4 +20,38 @@
   width: 200px;
   height: auto;
   border-radius: 15%;
+}
+
+/* Menu items */
+.navbar a,
+.navbar button {
+  color: #000000;
+  text-decoration: none;
+  padding: 12px 8px;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-right 0.3s ease;
+  display: block;
+  border-right: 4px solid transparent;
+  background-color: transparent;
+}
+
+.navbar a.active {
+  background-color: #FFF1F3;
+  border-right: 4px solid #e81a31; 
+  color: #000000;
+  font-weight: 600;
+}
+
+/* Hover effect op actieve pagina: donkerdere rode achtergrond */
+.navbar a.active:hover {
+  background-color: #FFC5CC;
+  color: #000000;
+}
+
+/* Hover effect op niet-actieve links */
+.navbar a:not(.active):hover {
+  background-color: rgba(232, 26, 49, 0.15);
+  color: #000000;
 }
