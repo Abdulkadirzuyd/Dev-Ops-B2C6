@@ -3,6 +3,7 @@ import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import RegisterPage from "./pages/Register/RegisterPage";
 import Navbar from "./pages/Navbar/Navbar";
+import Purchasing from "./pages/Purchasing/Purchasing";
 import StoragePage from "./pages/Storage/StoragePage";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/purchasing" element={<Purchasing />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/storage" element={<StoragePage />} />
