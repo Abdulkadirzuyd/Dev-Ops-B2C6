@@ -7,12 +7,31 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // ⬅️ gebruik de hook
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Simuleer een succesvolle login en navigeer naar de homepagina // ALLEEN VOOR DEVELOPMENT
-    navigate('/home', { replace: true }); // ⬅️ vervangt /login in de browsergeschiedenis
-  };
+  try {
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+  localStorage.setItem("userId", result.user_id);
+  navigate("/home", { replace: true });
+} else {
+      alert("Fout: " + result.message);
+    }
+  } catch (err) {
+    alert("Serverfout: " + err.message);
+  }
+};
+
 
   return (
     <div className={styles.container}>

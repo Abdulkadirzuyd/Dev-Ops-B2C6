@@ -27,9 +27,11 @@ def simulate_forward_order(data):
 def fetch_all_orders():
     # Voor nu → fake data → later DB koppelen
     example_order = Order(
+        id=1,
         product_type="A",
         quantity=1,
         order_date="2025-05-29",
         signature="John Doe"
     )
     return [example_order]
+

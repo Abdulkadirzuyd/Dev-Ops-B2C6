@@ -1,45 +1,67 @@
 import React, { useState } from 'react';
 import styles from './OrderStyle.module.css';
+import { useEffect } from "react";
+
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState([
-    {
-      orderNummer: '1001',
-      besteldatum: '2025-05-03',
-      productType: 'A',
-      hoeveelheid: 2,
-      goedgekeurd: false,
-      doorgestuurd: false,
-    },
-    {
-      orderNummer: '1002',
-      besteldatum: '2025-05-01',
-      productType: 'B',
-      hoeveelheid: 5,
-      goedgekeurd: true,
-      doorgestuurd: false,
-    },
-    {
-      orderNummer: '1003',
-      besteldatum: '2025-05-02',
-      productType: 'C',
-      hoeveelheid: 3,
-      goedgekeurd: true,
-      doorgestuurd: true,
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
 
-  const handleApprove = (index) => {
-    const updated = [...orders];
-    updated[index].goedgekeurd = true;
-    setOrders(updated);
-  };
+  useEffect(() => {
+  fetch("http://localhost:5000/orders")
+    .then((res) => res.json())
+    .then((data) => setOrders(data))
+    .catch((err) => console.error("Fout bij ophalen orders:", err));
+}, []);
 
-  const handleForward = (index) => {
-    const updated = [...orders];
-    updated[index].doorgestuurd = true;
-    setOrders(updated);
-  };
+  const handleApprove = async (index, id) => {
+  const updatedOrder = { ...orders[index], goedgekeurd: true };
+
+  try {
+    const response = await fetch(`http://localhost:5000/orders/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedOrder),
+    });
+
+    if (response.ok) {
+      const updated = [...orders];
+      updated[index] = updatedOrder;
+      setOrders(updated);
+    } else {
+      alert("Fout bij goedkeuren order");
+    }
+  } catch (err) {
+    console.error("Fout bij fetch PUT:", err);
+  }
+};
+
+
+  const handleForward = async (index, id) => {
+  const updatedOrder = { ...orders[index], doorgestuurd: true };
+
+  try {
+    const response = await fetch(`http://localhost:5000/orders/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedOrder),
+    });
+
+    if (response.ok) {
+      const updated = [...orders];
+      updated[index] = updatedOrder;
+      setOrders(updated);
+    } else {
+      alert("Fout bij doorsturen order");
+    }
+  } catch (err) {
+    console.error("Fout bij fetch PUT:", err);
+  }
+};
+
 
   return (
     <div className={styles.container}>
@@ -81,7 +103,7 @@ export default function OrderPage() {
                 {!order.goedgekeurd && (
                   <button
                     className={styles.button}
-                    onClick={() => handleApprove(index)}
+                    onClick={() => handleApprove(index, order.id)}
                   >
                     Goedkeuren
                   </button>
@@ -89,7 +111,7 @@ export default function OrderPage() {
                 {order.goedgekeurd && !order.doorgestuurd && (
                   <button
                     className={styles.button}
-                    onClick={() => handleForward(index)}
+                    onClick={() => handleForward(index, order.id)}
                   >
                     Door sturen
                   </button>
