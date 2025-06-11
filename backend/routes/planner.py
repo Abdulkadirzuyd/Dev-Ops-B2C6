@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services.planner_service import validate_planner_task, simulate_forward_planner_task, fetch_all_planner_tasks
+from services.planner_service import (
+    validate_planner_task,
+    simulate_forward_planner_task,
+    fetch_all_planner_tasks
+)
 from models.planner import PlannerTask
 
 planner_bp = Blueprint("planner", __name__)

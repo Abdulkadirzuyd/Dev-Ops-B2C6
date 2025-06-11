@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
 from services.user_service import register_user, login_user
+from models.user_model import User
+from extensions import db
+
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -26,9 +29,6 @@ def login():
 def delete_user():
     data = request.json
     email = data.get("email")
-
-    from models.user_model import User
-    from app import db
 
     user = User.query.filter_by(email=email).first()
     if user:

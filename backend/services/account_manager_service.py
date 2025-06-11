@@ -1,23 +1,25 @@
 from database import db
 from models.account_manager_model import AccountManager
 
-def create_account_manager(data):
+def approve_order(manager_id, order_id):
     query = """
-        INSERT INTO account_managers (name, email, phone_number)
-        VALUES (%s, %s, %s)
+        UPDATE orders
+        SET order_status = 'goedgekeurd', goedgekeurd = 1
+        WHERE id = %s
     """
     cursor = db.cursor()
-    cursor.execute(query, (data.name, data.email, data.phone_number))
+    cursor.execute(query, (order_id,))
     db.commit()
-    data.id = cursor.lastrowid
-    return data  # je retourneert nu een AccountManager met ID
+    return {"order_id": order_id, "status": "goedgekeurd", "approved_by": manager_id}
 
-def fetch_all_account_managers():
-    query = "SELECT * FROM account_managers"
-    cursor = db.cursor(dictionary=True)
-    cursor.execute(query)
-    results = cursor.fetchall()
+def reject_order(manager_id, order_id):
+    query = """
+        UPDATE orders
+        SET order_status = 'afgewezen', goedgekeurd = 0
+        WHERE id = %s
+    """
+    cursor = db.cursor()
+    cursor.execute(query, (order_id,))
+    db.commit()
+    return {"order_id": order_id, "status": "afgewezen", "rejected_by": manager_id}
 
-    # Maak er AccountManager-objecten van
-    managers = [AccountManager(**row) for row in results]
-    return managers
