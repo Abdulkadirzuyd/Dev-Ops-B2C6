@@ -3,9 +3,8 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #ffffff00;
   padding: 2rem;
-  color: black;
   font-family: Arial, sans-serif;
 }
 
@@ -32,20 +31,16 @@
   border: none;
   font-size: 1rem;
   min-width: 120px;
-  background-color: #f9f9f9;  /*zelfde als tabel achtergrond*/
-  color: black;
   transition: background-color 0.3s ease;
-}
-
-.input::placeholder {
-  color: rgba(0, 0, 0, 0.4); /* licht grijs placeholder */
+  background-color: #f4f4f4; /* Lichtgrijze achtergrond */
+  color: #333; /* Donkergrijze tekstkleur */
 }
 
 .input:focus,
 .select:focus {
-  outline: none;
-  background-color: #e6e6e6; /* iets donkerder bij focus */
+  outline: 2px solid #e81a31;
 }
+
 
 .select {
   cursor: pointer;
@@ -56,7 +51,7 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  background-color: #1976d2; /* blauwe button */
+  background-color: #e81a31; 
   color: white;
   font-weight: bold;
   transition: transform 0.3s ease, background-color 0.3s ease;
@@ -64,14 +59,16 @@
 
 .button:hover {
   transform: scale(1.05);
-  background-color: #115293; /* donkerder blauw */
+  border: 2px solid;
+  color: #e81a31;
+  background-color: #b4a5a700;
 }
 
 /* Tabel styling */
 .tableContainer {
   width: 100%;
   max-width: 900px;
-  background-color: #f9f9f9;
+  background-color: #f9f9f900;
   padding: 1rem;
   border-radius: 10px;
 }
@@ -80,10 +77,9 @@
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-  background-color: #f9f9f9;
+  background-color: #f9f9f900;
   padding: 0.75rem 1rem;
   border-bottom: 2px solid #ccc;
-  color: black;
 }
 
 .leftGroup,
@@ -111,7 +107,7 @@
   text-align: center;
   border-bottom: 1px solid #e0e0e0;
   background-color: #f9f9f9;
-  color: black;
+  color: rgba(0, 0, 0, 0);
 }
 
 .tableRow:nth-child(even) {
@@ -140,4 +136,12 @@
 .tableRow button:hover {
   background-color: #FFC5CC;
   transform: scale(1.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .input,
+  .select {
+    background-color: #222; 
+    color: #fff;             
+  }
 }
