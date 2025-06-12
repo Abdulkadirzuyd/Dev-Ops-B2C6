@@ -43,6 +43,38 @@
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
+.orderForm {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 150px;
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #218838;
+}
+
 .table {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -72,10 +104,45 @@
   border-bottom: 1px solid #eee;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.form input,
+.form select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+
+.coloredInput {
+  border: 1.5px solid #e81a31; 
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #ffffff; 
+  color: #080808;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+
+
 @media (prefers-color-scheme: dark) {
   .table {
-    background-color: #1e1e1e; /* Donkere achtergrond */
-    color: #fff; /* Witte tekst */
+    background-color: #1e1e1e;
+    color: #fff;
   }
 
   .tableHeader div {
@@ -88,4 +155,14 @@
     border-bottom: 1px solid #444;
     color: #fff;
   }
+
+  .coloredInput {
+    border: 1.5px solid #e81a31; /* rood */
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #2e2e2e; /* lichtroze achtergrond */
+    color: #ffffff;
+    transition: border-color 0.3s, background-color 0.3s;
+}
 }
