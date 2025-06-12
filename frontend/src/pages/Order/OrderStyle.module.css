@@ -141,6 +141,24 @@
   transform: scale(1.05);
 }
 
+.searchInput {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.5rem;
+  background-color: #f9f9f9;
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.searchInput:focus {
+  outline: 2px solid #e81a31;
+}
+
+
 @media (prefers-color-scheme: dark) {
   .container {
     color: white;
@@ -201,5 +219,18 @@
 
   .button:hover {
     background-color: #115293;
+  }
+
+  .searchInput {
+    background-color: #2b2b2b;
+    color: #f0f0f0;
+  }
+
+  .searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .searchInput:focus {
+    outline: 2px solid #e81a31;
   }
 }
