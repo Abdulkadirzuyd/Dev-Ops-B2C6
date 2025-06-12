@@ -1,34 +1,19 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import styles from './HomeStyle.module.css';
-import logo from '../../assets/banaanlogo.png';
-import { useEffect } from 'react';
 
 export default function HomePage() {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    // Scroll uitschakelen
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      // Scroll weer inschakelen als je van de pagina af gaat
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Hier kun je inloggen verwerken, bv. API-call
+    alert(`Inloggen met:\nEmail: ${email}\nWachtwoord: ${password}`);
+  };
 
   return (
     <div className={styles.container}>
-      <img src={logo} alt="Logo" className={styles.logo} />
-      <h1>Welkom bij ons ERP Systeem</h1>
-      <h1>Casus team Banaan 🍌</h1>
-      <div className={styles.buttons}>
-      <button className={styles.button} onClick={() => navigate('/login')}>
-        Login
-        </button>
-        <button className={styles.button} onClick={() => navigate('/register')}>
-        Registreer
-      </button>
-      </div>
+    
     </div>
   );
 }

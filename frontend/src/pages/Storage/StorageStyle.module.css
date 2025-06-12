@@ -1,0 +1,91 @@
+.storageContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.button.grey {
+  background-color: #888;
+}
+
+.button.blue {
+  background-color: #1976d2;
+}
+
+.button.red {
+  background-color: #e81a31;
+}
+
+.button.active {
+  box-shadow: 0 0 0 3px rgb(0, 255, 34);
+  transform: scale(1.05);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+.tableHeader,
+.tableRow {
+  display: contents;
+}
+
+.tableHeader div {
+  font-weight: bold;
+  padding: 1rem;
+  background-color: #ddd;
+  border-bottom: 2px solid #ccc;
+}
+
+.tableRow div {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+  .table {
+    background-color: #1e1e1e; /* Donkere achtergrond */
+    color: #fff; /* Witte tekst */
+  }
+
+  .tableHeader div {
+    background-color: #333;
+    color: #fff;
+    border-bottom: 2px solid #555;
+  }
+
+  .tableRow div {
+    border-bottom: 1px solid #444;
+    color: #fff;
+  }
+}
