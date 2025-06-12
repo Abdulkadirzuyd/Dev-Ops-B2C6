@@ -55,3 +55,32 @@
   background-color: rgba(232, 26, 49, 0.15);
   color: #000000;
 }
+
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background-color: #121212;
+    border-right: 1px solid #333;
+  }
+
+  .navbar a,
+  .navbar button {
+    color: #ffffff;
+    background-color: transparent;
+  }
+
+  .navbar a.active {
+    background-color: #2a2a2a;
+    border-right: 4px solid #e81a31;
+    color: #ffffff;
+  }
+
+  .navbar a.active:hover {
+    background-color: #3a3a3a;
+    color: #ffffff;
+  }
+
+  .navbar a:not(.active):hover {
+    background-color: rgba(232, 26, 49, 0.2);
+    color: #ffffff;
+  }
+}
