@@ -6,7 +6,9 @@ export default function CustomerSimulationPage({ onAddOrder }) {
   const [newOrderNummer, setNewOrderNummer] = useState('');
   const [newProductType, setNewProductType] = useState('A');
   const [newHoeveelheid, setNewHoeveelheid] = useState(1);
-
+const handleRefresh = () => {
+  window.location.reload();
+};
   const handleAddOrder = (e) => {
     e.preventDefault();
 
@@ -35,6 +37,11 @@ export default function CustomerSimulationPage({ onAddOrder }) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.refreshContainer}>
+  <button className={styles.refreshButton} onClick={handleRefresh}>
+     Pagina verversen
+  </button>
+</div>
       <h1 className={styles.title}>Customer Simulation - Nieuwe Order</h1>
 
       <form className={styles.form} onSubmit={handleAddOrder}>

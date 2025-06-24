@@ -37,8 +37,17 @@ const StoragePage = () => {
     (a, b) => new Date(b.date) - new Date(a.date)
   );
 
+const handleRefresh = () => {
+  window.location.reload();
+};
+
   return (
     <div className={styles.storageContainer}>
+      <div className={styles.refreshContainer}>
+  <button onClick={handleRefresh} className={styles.refreshButton}>
+    Pagina verversen
+  </button>
+</div>
       <div className={styles.controls}>
         <button
           className={`${styles.button} ${styles.grey} ${

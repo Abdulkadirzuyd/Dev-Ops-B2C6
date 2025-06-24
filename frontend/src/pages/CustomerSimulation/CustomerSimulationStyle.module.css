@@ -145,3 +145,24 @@
     color: #fff;             
   }
 }
+
+.refreshContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.refreshButton {
+  background-color: #e81a31;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.refreshButton:hover {
+  background-color: #e81a31;
+}

@@ -166,3 +166,25 @@
     transition: border-color 0.3s, background-color 0.3s;
 }
 }
+
+.refreshContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.refreshButton {
+  background-color:#e81a31;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.refreshButton:hover {
+  background-color: #e81a31;
+}
+
