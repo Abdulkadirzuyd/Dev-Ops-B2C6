@@ -31,6 +31,21 @@
     outline: none;
     transition: border-color 0.25s;
   }
+
+  input[type="text"] {
+  background-color: white;
+  color: black;
+  }
+
+  input[type="password"] {
+  background-color: white;
+  color: black;
+  }
+
+  input[type="email"] {
+  background-color: white;
+  color: black;
+  }
   
   input:focus {
     border-color: #ffc400;
@@ -55,3 +70,11 @@
     transform: scale(1.05);
   }
   
+@media (prefers-color-scheme: dark) {
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    background-color: rgb(255, 255, 255);
+    color: black;
+  }
+}
