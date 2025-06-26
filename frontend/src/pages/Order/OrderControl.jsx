@@ -4,6 +4,9 @@ import styles from './OrderStyle.module.css';
 export default function OrderPage() {
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+const handleRefresh = () => {
+  window.location.reload();
+};
 
   useEffect(() => {
     fetch("http://localhost:5000/orders")
@@ -58,6 +61,11 @@ export default function OrderPage() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.refreshContainer}>
+  <button onClick={handleRefresh} className={styles.refreshButton}>
+    Pagina verversen
+  </button>
+</div>
       <h1 className={styles.title}>Orderbeheer</h1>
 
       <input
