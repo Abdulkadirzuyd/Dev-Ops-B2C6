@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './CustomerSimulationStyle.module.css';
 
-export default function CustomerSimulationPage({ onAddOrder }) {
+export default function CustomerSimulationPage({}) {
   // Form state
   const [newOrderNummer, setNewOrderNummer] = useState('');
   const [newProductType, setNewProductType] = useState('A');
@@ -9,31 +9,50 @@ export default function CustomerSimulationPage({ onAddOrder }) {
 const handleRefresh = () => {
   window.location.reload();
 };
-  const handleAddOrder = (e) => {
-    e.preventDefault();
 
-    if (!newOrderNummer.trim()) {
-      alert('Vul een geldig ordernummer in.');
-      return;
-    }
-    if (newHoeveelheid < 1) {
-      alert('Hoeveelheid moet minimaal 1 zijn.');
-      return;
-    }
+const handleAddOrder = async (e) => {
+  e.preventDefault();
 
-    onAddOrder({
-      orderNummer: newOrderNummer.trim(),
-      besteldatum: new Date().toISOString().split('T')[0],
-      productType: newProductType,
-      hoeveelheid: Number(newHoeveelheid),
-      goedgekeurd: false,
-      doorgestuurd: false,
+  if (!newOrderNummer.trim()) {
+    alert('Vul een geldig ordernummer in.');
+    return;
+  }
+  if (newHoeveelheid < 1) {
+    alert('Hoeveelheid moet minimaal 1 zijn.');
+    return;
+  }
+
+  const payload = {
+    klantnaam: newOrderNummer.trim(),
+    product_type: newProductType,
+    quantity: Number(newHoeveelheid),
+    order_date: new Date().toISOString().split('T')[0],
+    signature: "simulatie123"
+  };
+
+  try {
+    const res = await fetch("http://localhost:5000/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
 
-    setNewOrderNummer('');
-    setNewProductType('A');
-    setNewHoeveelheid(1);
-  };
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(`Order toegevoegd met ID: ${data.order_id}`);
+      setNewOrderNummer('');
+      setNewProductType('A');
+      setNewHoeveelheid(1);
+    } else {
+      alert(`Fout bij toevoegen: ${data.reason || 'Onbekende fout'}`);
+    }
+  } catch (err) {
+    alert("Fout bij verbinding met backend");
+    console.error(err);
+  }
+};
+
 
   return (
     <div className={styles.container}>

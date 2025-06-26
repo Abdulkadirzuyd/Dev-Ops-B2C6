@@ -4,24 +4,79 @@ import styles from './HomeStyle.module.css';
 export default function HomePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const handleRefresh = () => {
     window.location.reload();
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Hier kun je inloggen verwerken, bv. API-call
-    alert(`Inloggen met:\nEmail: ${email}\nWachtwoord: ${password}`);
-  };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      alert("Login succesvol!");
+      // eventueel: sla token op in localStorage
+      // localStorage.setItem("token", data.token);
+    } else {
+      alert("Login mislukt: " + (data.message || "onbekende fout"));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Fout bij verbinden met de server.");
+  }
+
+  setEmail('');
+  setPassword('');
+};
+
 
   return (
-  <div className={styles.container}>
-    <div className={styles.refreshContainer}>
-      <button className={styles.refreshButton} onClick={handleRefresh}>Pagina verversen</button>
+    <div className={styles.container}>
+      <div className={styles.refreshContainer}>
+        <button className={styles.refreshButton} onClick={handleRefresh}>
+          Pagina verversen
+        </button>
+      </div>
+
+      <h1>Login Pagina</h1>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="email">E-mailadres:</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="password">Wachtwoord:</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className={styles.submitButton}>
+          Inloggen
+        </button>
+      </form>
     </div>
-    <h1></h1>
-    {/* Andere content hier */}
-  </div>
-);
-
+  );
 }
-
