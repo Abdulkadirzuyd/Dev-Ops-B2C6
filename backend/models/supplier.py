@@ -1,7 +1,10 @@
-from dataclasses import dataclass
+from extensions import db
 
-@dataclass
-class Supplier:
-    supplier_name: str
-    contact_email: str
-    phone_number: str
+class Supplier(db.Model):
+    __tablename__ = 'suppliers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    supplier_name = db.Column(db.String(255), nullable=False)
+    contact_email = db.Column(db.String(255), nullable=False)
+    phone_number = db.Column(db.String(50), nullable=False)
+

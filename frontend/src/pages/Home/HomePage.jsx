@@ -1,34 +1,82 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import styles from './HomeStyle.module.css';
-import logo from '../../assets/banaanlogo.png';
-import { useEffect } from 'react';
 
 export default function HomePage() {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    // Scroll uitschakelen
-    document.body.style.overflow = 'hidden';
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
-    return () => {
-      // Scroll weer inschakelen als je van de pagina af gaat
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      alert("Login succesvol!");
+      // eventueel: sla token op in localStorage
+      // localStorage.setItem("token", data.token);
+    } else {
+      alert("Login mislukt: " + (data.message || "onbekende fout"));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Fout bij verbinden met de server.");
+  }
+
+  setEmail('');
+  setPassword('');
+};
+
 
   return (
     <div className={styles.container}>
-      <img src={logo} alt="Logo" className={styles.logo} />
-      <h1>Welkom bij ons ERP Systeem</h1>
-      <h1>Casus team Banaan 🍌</h1>
-      <div className={styles.buttons}>
-      <button className={styles.button} onClick={() => navigate('/login')}>
-        Login
+      <div className={styles.refreshContainer}>
+        <button className={styles.refreshButton} onClick={handleRefresh}>
+          Pagina verversen
         </button>
-        <button className={styles.button} onClick={() => navigate('/register')}>
-        Registreer
-      </button>
       </div>
+
+      <h1>Login Pagina</h1>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="email">E-mailadres:</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="password">Wachtwoord:</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className={styles.submitButton}>
+          Inloggen
+        </button>
+      </form>
     </div>
   );
 }

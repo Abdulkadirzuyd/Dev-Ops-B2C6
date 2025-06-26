@@ -31,6 +31,21 @@
     outline: none;
     transition: border-color 0.25s;
   }
+
+  input[type="text"] {
+  background-color: white;
+  color: black;
+  }
+
+  input[type="password"] {
+  background-color: white;
+  color: black;
+  }
+
+  input[type="email"] {
+  background-color: white;
+  color: black;
+  }
   
   input:focus {
     border-color: #ffc400;
@@ -42,15 +57,24 @@
     font-size: 1.1rem;
     border-radius: 8px;
     border: none;
-    background-color: #000000;
+    background-color: #e81a31;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
   }
   
   .button:hover {
-    background-color: #ffc400;
-    color: black;
+    background-color: #ffffff00;
+    border: 2px solid;
+    color: #e81a31;
     transform: scale(1.05);
   }
   
+@media (prefers-color-scheme: dark) {
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    background-color: rgb(255, 255, 255);
+    color: black;
+  }
+}

@@ -4,22 +4,22 @@ from models.account_manager_model import AccountManager
 
 account_manager_bp = Blueprint('account_manager', __name__)
 
-@account_manager_bp.route('/account_managers', methods=['POST'])
-def add_account_manager():
+
+@account_manager_bp.route('/account_managers/<int:manager_id>/approve_order/<int:order_id>', methods=['POST'])
+def approve_order(manager_id, order_id):
     try:
-        json_data = request.json
-        manager = AccountManager(**json_data)
-        created = account_manager_service.create_account_manager(manager)
-        return jsonify(created.__dict__), 201
+        result = account_manager_service.approve_order(manager_id, order_id)
+        return jsonify(result)
     except Exception as e:
-        print("Fout bij toevoegen:", e)
+        print("Fout bij goedkeuren:", e)
         return jsonify({"error": "Database fout"}), 500
 
-@account_manager_bp.route('/account_managers', methods=['GET'])
-def get_account_managers():
+@account_manager_bp.route('/account_managers/<int:manager_id>/reject_order/<int:order_id>', methods=['POST'])
+def reject_order(manager_id, order_id):
     try:
-        managers = account_manager_service.fetch_all_account_managers()
-        return jsonify([m.__dict__ for m in managers])
+        result = account_manager_service.reject_order(manager_id, order_id)
+        return jsonify(result)
     except Exception as e:
-        print("Fout bij ophalen:", e)
+        print("Fout bij afwijzen:", e)
         return jsonify({"error": "Database fout"}), 500
+

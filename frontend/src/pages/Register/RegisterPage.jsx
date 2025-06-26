@@ -6,11 +6,34 @@ export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // Hier kun je registratie verwerken, bv. API-call
-      alert(`Registreren met:\nGebruikersnaam: ${username}\nEmail: ${email}\nWachtwoord: ${password}`);
-    };
+    const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:5000/customers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: username,
+        email: email,
+        phone_number: "0612345678", // tijdelijk vast invullen of extra veld maken
+      }),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("Registratie gelukt!");
+    } else {
+      alert("Fout: " + result.reason);
+    }
+  } catch (error) {
+    alert("Server fout: " + error.message);
+  }
+};
+
   
     return (
       <div className={styles.container}>

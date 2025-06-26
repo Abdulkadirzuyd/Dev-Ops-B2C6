@@ -1,15 +1,42 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './LoginStyle.module.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Hier kun je inloggen verwerken, bv. API-call
-    alert(`Inloggen met:\nEmail: ${email}\nWachtwoord: ${password}`);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    email,
+    password,
   };
+
+  try {
+    const res = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // tijdelijk: dummy response simulatie
+      localStorage.setItem("userId", data.user_id || "dummyUser");
+      navigate("/home", { replace: true });
+    } else {
+      alert("Login mislukt. Controleer je gegevens.");
+    }
+  } catch (err) {
+    console.error("Fout bij login:", err);
+    alert("Er ging iets mis met de verbinding.");
+  }
+};
+
 
   return (
     <div className={styles.container}>
@@ -21,8 +48,8 @@ export default function LoginPage() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
           placeholder="jouw@email.com"
+          // verwijderd required
         />
 
         <label htmlFor="password">Wachtwoord</label>
@@ -31,8 +58,8 @@ export default function LoginPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
           placeholder="••••••••"
+          // verwijderd required
         />
 
         <button type="submit" className={styles.button}>Inloggen</button>

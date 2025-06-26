@@ -9,3 +9,5 @@ MarkupSafe
 Werkzeug
 zipp
 Flask-SQLAlchemy
+pymysql
+cryptography>=42.0
