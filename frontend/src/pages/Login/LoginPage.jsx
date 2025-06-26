@@ -1,37 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ⬅️ importeer deze
+import { useNavigate } from 'react-router-dom';
 import styles from './LoginStyle.module.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // ⬅️ gebruik de hook
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const response = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-  localStorage.setItem("userId", result.user_id);
-  navigate("/home", { replace: true });
-} else {
-      alert("Fout: " + result.message);
-    }
-  } catch (err) {
-    alert("Serverfout: " + err.message);
-  }
-};
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem("userId", "dummyUser");
+    navigate("/home", { replace: true });
+  };
 
   return (
     <div className={styles.container}>
@@ -43,8 +23,8 @@ export default function LoginPage() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
           placeholder="jouw@email.com"
+          // verwijderd required
         />
 
         <label htmlFor="password">Wachtwoord</label>
@@ -53,8 +33,8 @@ export default function LoginPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
           placeholder="••••••••"
+          // verwijderd required
         />
 
         <button type="submit" className={styles.button}>Inloggen</button>

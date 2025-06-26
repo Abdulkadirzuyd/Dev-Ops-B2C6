@@ -9,11 +9,17 @@ from routes.planner import planner_bp
 from routes.supplier import supplier_bp
 from routes.auth import auth_bp
 from models.user_model import User
+import os
 
 def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Zuyd2025!@localhost/simulatie_db'
+
+    # Gebruik de environment variable van docker-compose, met een fallback naar sqlite voor lokale tests
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+        'SQLALCHEMY_DATABASE_URI',
+        'sqlite:///local.db'  # fallback als env var niet aanwezig is
+    )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
@@ -21,6 +27,7 @@ def create_app():
     with app.app_context():
         db.create_all()
 
+    # Register blueprints
     app.register_blueprint(order_bp)
     app.register_blueprint(account_manager_bp)
     app.register_blueprint(customers_bp)
