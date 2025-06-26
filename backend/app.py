@@ -16,13 +16,14 @@ def create_app():
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     # Zet hier de juiste connectiestring hardcoded:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password1234@172.201.187.117:3306/simulate_db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password1234@172.201.187.117:3306/simulatie_db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
 
     with app.app_context():
         db.create_all()
+
 
     # Register blueprints
     app.register_blueprint(order_bp)
