@@ -11,3 +11,5 @@ zipp
 Flask-SQLAlchemy
 pymysql
 cryptography>=42.0
+python-dotenv
+
