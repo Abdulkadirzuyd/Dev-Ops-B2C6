@@ -1,12 +1,10 @@
 #!/bin/bash
-apt update
-apt install -y mysql-server
 
-# Importeer alle SQL bestanden
-for f in /var/lib/scripts/*.sql; do
-  mysql -u root -e "SOURCE $f;"
+DB="simulatie_db"
+USER="root"
+PASS="P@ssword1234!"
+
+for file in *.sql; do
+    echo "Importing $file..."
+    mysql -u $USER -p$PASS $DB < "$file"
 done
-
-# Bind MySQL op alle interfaces
-sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
-systemctl restart mysql
