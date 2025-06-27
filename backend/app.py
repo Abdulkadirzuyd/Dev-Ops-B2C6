@@ -15,17 +15,15 @@ def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-    # Gebruik de environment variable van docker-compose, met een fallback naar sqlite voor lokale tests
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-        'SQLALCHEMY_DATABASE_URI',
-        'sqlite:///local.db'  # fallback als env var niet aanwezig is
-    )
+    # Zet hier de juiste connectiestring hardcoded:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password1234@172.201.187.117:3306/simulatie_db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
 
     with app.app_context():
         db.create_all()
+
 
     # Register blueprints
     app.register_blueprint(order_bp)

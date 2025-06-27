@@ -13,6 +13,12 @@ const StoragePage = () => {
   const [formColor, setFormColor] = useState("grey");
   const [formAmount, setFormAmount] = useState("");
 
+  const toggleFormColor = (color) => {
+    setFormColors((prev) =>
+      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
+    );
+  };
+
   const handleOrderSubmit = (e) => {
     e.preventDefault();
     if (!formAmount || isNaN(formAmount) || formAmount <= 0) return;
@@ -25,6 +31,7 @@ const StoragePage = () => {
 
     setOrders([newOrder, ...orders]);
     setFormAmount(""); // reset na bestelling
+    setFormColors([]);
   };
 
   // Filter de bestellingen op kleur als er een filter is
@@ -41,64 +48,54 @@ const handleRefresh = () => {
   window.location.reload();
 };
 
-  return (
+   return (
     <div className={styles.storageContainer}>
       <div className={styles.refreshContainer}>
-  <button onClick={handleRefresh} className={styles.refreshButton}>
-    Pagina verversen
-  </button>
-</div>
+        <button onClick={handleRefresh} className={styles.refreshButton}>
+          Pagina verversen
+        </button>
+      </div>
+
       <div className={styles.controls}>
+        {["grey", "blue", "red"].map((color) => (
+          <button
+            key={color}
+            className={`${styles.button} ${styles[color]} ${
+              selectedColor === color ? styles.active : ""
+            }`}
+            onClick={() => setSelectedColor(color)}
+          >
+            {color.charAt(0).toUpperCase() + color.slice(1)}
+          </button>
+        ))}
         <button
-          className={`${styles.button} ${styles.grey} ${
-            selectedColor === "grey" ? styles.active : ""
-          }`}
-          onClick={() => setSelectedColor("grey")}
-        >
-          Grijs
-        </button>
-        <button
-          className={`${styles.button} ${styles.blue} ${
-            selectedColor === "blue" ? styles.active : ""
-          }`}
-          onClick={() => setSelectedColor("blue")}
-        >
-          Blauw
-        </button>
-        <button
-          className={`${styles.button} ${styles.red} ${
-            selectedColor === "red" ? styles.active : ""
-          }`}
-          onClick={() => setSelectedColor("red")}
-        >
-          Rood
-        </button>
-        <button
-          className={`${styles.button} ${styles.red}`}  // rood maken
+          className={`${styles.button} ${styles.red}`}
           onClick={() => setSelectedColor("")}
         >
           Alles tonen
         </button>
       </div>
 
-      {/* 📝 Bestelformulier */}
+      {/* ✅ Nieuw formulier met meerdere kleuren */}
       <form className={styles.form} onSubmit={handleOrderSubmit}>
-        <label>
-          Kies kleur:
-          <select
-            className={styles.coloredInput}   // nieuwe class voor input
-            value={formColor}
-            onChange={(e) => setFormColor(e.target.value)}
-          >
-            <option value="grey">Grijs</option>
-            <option value="blue">Blauw</option>
-            <option value="red">Rood</option>
-          </select>
-        </label>
+        <div className={styles.colorSelect}>
+          {["grey", "blue", "red"].map((color) => (
+            <label key={color}>
+              <input
+                type="checkbox"
+                value={color}
+                checked={formColors.includes(color)}
+                onChange={() => toggleFormColor(color)}
+              />
+              {color}
+            </label>
+          ))}
+        </div>
+
         <label>
           Aantal blokken:
           <input
-            className={styles.coloredInput}   // nieuwe class voor input
+            className={styles.coloredInput}
             type="number"
             min="1"
             value={formAmount}
@@ -110,23 +107,25 @@ const handleRefresh = () => {
         </button>
       </form>
 
-      {/* 📊 Tabel met bestellingen */}
       <div className={styles.table}>
         <div className={styles.tableHeader}>
           <div>Aantal blokken</div>
           <div>Besteldatum</div>
+          <div>Kleuren</div>
         </div>
 
         {sortedOrders.map((order, i) => (
           <div className={styles.tableRow} key={i}>
             <div>{order.amount}</div>
             <div>{order.date}</div>
+            <div>{order.colors.join(", ")}</div>
           </div>
         ))}
 
         {sortedOrders.length === 0 && (
           <div className={styles.tableRow}>
             <div>Geen bestellingen gevonden.</div>
+            <div></div>
             <div></div>
           </div>
         )}

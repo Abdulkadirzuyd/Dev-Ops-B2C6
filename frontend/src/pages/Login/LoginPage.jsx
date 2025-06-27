@@ -7,11 +7,36 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    localStorage.setItem("userId", "dummyUser");
-    navigate("/home", { replace: true });
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    email,
+    password,
   };
+
+  try {
+    const res = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // tijdelijk: dummy response simulatie
+      localStorage.setItem("userId", data.user_id || "dummyUser");
+      navigate("/home", { replace: true });
+    } else {
+      alert("Login mislukt. Controleer je gegevens.");
+    }
+  } catch (err) {
+    console.error("Fout bij login:", err);
+    alert("Er ging iets mis met de verbinding.");
+  }
+};
+
 
   return (
     <div className={styles.container}>
@@ -38,6 +63,14 @@ export default function LoginPage() {
         />
 
         <button type="submit" className={styles.button}>Inloggen</button>
+
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => navigate('/home', { replace: true })}
+          >
+          Ga door zonder in te loggen
+      </button>
       </form>
     </div>
   );
