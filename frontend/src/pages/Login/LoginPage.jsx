@@ -63,6 +63,14 @@ export default function LoginPage() {
         />
 
         <button type="submit" className={styles.button}>Inloggen</button>
+
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => navigate('/home', { replace: true })}
+          >
+          Ga door zonder in te loggen
+      </button>
       </form>
     </div>
   );

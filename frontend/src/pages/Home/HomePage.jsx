@@ -47,36 +47,6 @@ export default function HomePage() {
           Pagina verversen
         </button>
       </div>
-
-      <h1>Login Pagina</h1>
-
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="email">E-mailadres:</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Wachtwoord:</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" className={styles.submitButton}>
-          Inloggen
-        </button>
-      </form>
     </div>
   );
 }
