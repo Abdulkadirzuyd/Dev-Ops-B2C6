@@ -51,17 +51,21 @@ def delete_order(order_id):
 
 @order_bp.route("/orders", methods=["POST"])
 def create_order():
-    data = request.json
-    new_id = max(order["id"] for order in orders) + 1 if orders else 1
-    new_order = {
-        "id": new_id,
-        "orderNummer": f"ORD{str(new_id).zfill(3)}",
-        "hoeveelheid": data.get("hoeveelheid", 0),
-        "productType": data.get("productType", "Onbekend"),
-        "besteldatum": data.get("besteldatum", "2025-06-26"),
-        "goedgekeurd": False,
-        "doorgestuurd": False
-    }
-    orders.append(new_order)
-    return jsonify(new_order), 201
+    data = request.get_json()
+
+    is_valid, message = validate_order(data)
+    if not is_valid:
+        return jsonify({"success": False, "reason": message}), 400
+
+    try:
+        new_order = simulate_forward_order(data)
+        return jsonify({
+            "success": True,
+            "order_id": new_order.id
+        }), 201
+    except Exception as e:
+        print(f"Fout bij opslaan order: {e}")
+        return jsonify({"success": False, "reason": str(e)}), 500
+
+
 
