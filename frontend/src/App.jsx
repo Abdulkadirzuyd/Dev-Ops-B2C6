@@ -5,14 +5,13 @@ import Navbar from "./components/Navbar";
 import StoragePage from "./pages/Storage/StoragePage";
 import StartupPage from "./pages/Startup/StartupPage";
 import HomePage from "./pages/Home/HomePage";
-import SalesPage from "./pages/Sales/SalesPage"
+import SalesPage from "./pages/Sales/SalesPage";
 import OrderPage from "./pages/Order/OrderControl";
 import CustomerSimulationPage from "./pages/CustomerSimulation/CustomerSimulationPage";
+import PlanningPage from "./pages/Planning/PlanningPage";
 
 function AppContent() {
   const location = useLocation();
-
-  // Verberg Navbar op deze routes
   const hiddenRoutes = ["/", "/login", "/register"];
   const hideNavbar = hiddenRoutes.includes(location.pathname);
 
@@ -29,6 +28,7 @@ function AppContent() {
           <Route path="/storage" element={<StoragePage />} />
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/order" element={<OrderPage />} />
+          <Route path="/planning" element={<PlanningPage />} />
         </Routes>
       </div>
     </div>
