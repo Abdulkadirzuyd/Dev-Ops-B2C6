@@ -4,13 +4,10 @@ class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    klantnaam = db.Column(db.String(100), nullable=False) 
-    product_type = db.Column(db.String(10), nullable=False)
+    product_name = db.Column(db.String(10), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    order_status = db.Column(db.String(50), default='in_behandeling')
-    order_date = db.Column(db.String(20), nullable=False)
-    signature = db.Column(db.String(100), nullable=False)
-    goedgekeurd = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(50), default='in_behandeling')
+    created_at = db.Column(db.String(20), nullable=False)
 
     def update_status(self, status):
         self.order_status = status

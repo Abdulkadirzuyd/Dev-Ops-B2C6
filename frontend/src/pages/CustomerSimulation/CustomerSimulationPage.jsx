@@ -4,7 +4,7 @@ import styles from './CustomerSimulationStyle.module.css';
 export default function CustomerSimulationPage({}) {
   // Form state
   const [newOrderNummer, setNewOrderNummer] = useState('');
-  const [newProductType, setNewProductType] = useState('A');
+  const [newProductName, setNewProductName] = useState('A');
   const [newHoeveelheid, setNewHoeveelheid] = useState(1);
 const handleRefresh = () => {
   window.location.reload();
@@ -23,11 +23,10 @@ const handleAddOrder = async (e) => {
   }
 
   const payload = {
-    klantnaam: newOrderNummer.trim(),
-    product_type: newProductType,
+    id: newOrderNummer.trim(),
+    product_name: newProductName,
     quantity: Number(newHoeveelheid),
-    order_date: new Date().toISOString().split('T')[0],
-    signature: "simulatie123"
+    created_at: new Date().toISOString().split('T')[0],
   };
 
   try {
@@ -42,7 +41,7 @@ const handleAddOrder = async (e) => {
     if (res.ok) {
       alert(`Order toegevoegd met ID: ${data.order_id}`);
       setNewOrderNummer('');
-      setNewProductType('A');
+      setNewProductName('A');
       setNewHoeveelheid(1);
     } else {
       alert(`Fout bij toevoegen: ${data.reason || 'Onbekende fout'}`);
@@ -74,8 +73,8 @@ const handleAddOrder = async (e) => {
         />
 
         <select
-          value={newProductType}
-          onChange={(e) => setNewProductType(e.target.value)}
+          value={newProductName}
+          onChange={(e) => setNewProductName(e.target.value)}
           className={styles.select}
         >
           <option value="A">Type A</option>

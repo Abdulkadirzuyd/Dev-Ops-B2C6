@@ -24,7 +24,6 @@ DROP TABLE IF EXISTS `orders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `customer_id` int DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `quantity` int DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
@@ -33,7 +32,6 @@ CREATE TABLE `orders` (
   `account_manager_id` int DEFAULT NULL,
   `planner_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_orders_customer` (`customer_id`),
   KEY `fk_orders_production_line` (`production_line_id`),
   KEY `fk_orders_account_manager` (`account_manager_id`),
   KEY `fk_orders_planner` (`planner_id`),
