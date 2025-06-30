@@ -10,11 +10,17 @@ class Order(db.Model):
     created_at = db.Column(db.String(20), nullable=False)
 
     def update_status(self, status):
-        self.order_status = status
+        self.status = status
 
     def is_valid(self):
-        return self.product_type in ["A", "B", "C"] and 1 <= self.quantity <= 3
+        # Check of product_name geldig is en hoeveelheid tussen 1 en 3 ligt
+        return self.product_name in ["A", "B", "C"] and 1 <= self.quantity <= 3
 
-    def calculate_delivery_score(self):
-        # voorbeeld: leverdatum = op tijd = score 100, anders 50
-        return 100 if self.goedgekeurd else 50
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "product_name": self.product_name,
+            "quantity": self.quantity,
+            "status": self.status,
+            "created_at": self.created_at
+        }
