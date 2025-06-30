@@ -4,12 +4,12 @@ from models.order import Order
 from extensions import db
 
 def validate_order(data):
-    required = ["product_type", "quantity", "order_date", "signature", "klantnaam"]
+    required = ["product_name", "quantity", "created_at", "id"]
     for field in required:
         if field not in data:
             return False, f"'{field}' ontbreekt"
 
-    if data["product_type"] not in ["A", "B", "C"]:
+    if data["product_name"] not in ["A", "B", "C"]:
         return False, "Ongeldig product type (alleen A, B of C)"
 
     try:
@@ -23,11 +23,10 @@ def validate_order(data):
 
 def simulate_forward_order(data):
     new_order = Order(
-        klantnaam=data["klantnaam"],
-        product_type=data["product_type"],
+        id=data["id"],
+        product_name=data["product_name"],
         quantity=data["quantity"],
-        order_date=data["order_date"],
-        signature=data["signature"]
+        created_at=data["created_at"],
     )
     db.session.add(new_order)
     db.session.commit()
@@ -39,10 +38,9 @@ def fetch_all_orders():
 def update_order(order_id, data):
     order = Order.query.get(order_id)
     if order:
-        order.product_type = data["product_type"]
+        order.product_type = data["product_name"]
         order.quantity = data["quantity"]
-        order.signature = data["signature"]
-        order.order_date = data["order_date"]
+        order.created_at = data["created_at"]
         db.session.commit()
         return order
     return None
