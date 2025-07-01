@@ -13,6 +13,7 @@ function Navbar() {
       <NavLink to="/order">Orders</NavLink>
       <NavLink to="/storage">Storage</NavLink>
       <NavLink to="/planning">Planning</NavLink>
+      <NavLink to="/production">Productie</NavLink>
     </nav>
   );
 }

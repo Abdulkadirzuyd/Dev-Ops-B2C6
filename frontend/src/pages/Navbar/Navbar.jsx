@@ -43,6 +43,12 @@ export default function Navbar() {
         >
           Orders
         </NavLink>
+        <NavLink 
+          to="/production" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Productie
+        </NavLink>
       </div>
     </nav>
   );

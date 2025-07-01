@@ -9,6 +9,7 @@ import SalesPage from "./pages/Sales/SalesPage";
 import OrderPage from "./pages/Order/OrderControl";
 import CustomerSimulationPage from "./pages/CustomerSimulation/CustomerSimulationPage";
 import PlanningPage from "./pages/Planning/PlanningPage";
+import ProductionPage from "./pages/Production/ProductionPage";
 
 function AppContent() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function AppContent() {
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/order" element={<OrderPage />} />
           <Route path="/planning" element={<PlanningPage />} />
+          <Route path="/production" element={<ProductionPage />} />
         </Routes>
       </div>
     </div>
