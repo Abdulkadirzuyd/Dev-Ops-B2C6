@@ -3,100 +3,104 @@ import styles from "./PlanningStyle.module.css";
 
 function PlanningPage() {
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedLine, setSelectedLine] = useState("");
+  const [geselecteerdeOrder, setGeselecteerdeOrder] = useState(null);
+  const [gekozenLijn, setGekozenLijn] = useState("");
+  const [piklijstId, setPiklijstId] = useState("");
 
-  // vaste recepten per producttype
-  const recipePerProduct = {
+  const receptPerProduct = {
     A: { rood: 3, blauw: 2, geel: 1 },
     B: { rood: 2, blauw: 3, geel: 2 },
     C: { rood: 1, blauw: 2, geel: 3 },
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/orders")
+    fetch("http://localhost:5000/planner/orders")
       .then((res) => res.json())
       .then((data) => setOrders(data))
-      .catch((err) => console.error("Fout bij ophalen orders:", err));
+      .catch((err) => console.error("Fout bij ophalen van orders:", err));
   }, []);
 
-  const handleForward = async (orderId) => {
-    const updatedOrder = {
-      ...selectedOrder,
-      doorgestuurd: true,
-      productielijn: selectedLine,
+  const verwerkOrder = async (orderId) => {
+    const aangepasteOrder = {
+      picklist_id: piklijstId,
+      production_line: gekozenLijn,
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/orders/${orderId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedOrder),
-      });
+      const response = await fetch(
+        `http://localhost:5000/planner/orders/${orderId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(aangepasteOrder),
+        }
+      );
 
       if (response.ok) {
+        const updated = await response.json();
         setOrders((prev) =>
-          prev.map((o) => (o.id === orderId ? updatedOrder : o))
+          prev.map((o) => (o.id === orderId ? updated.order : o))
         );
-        setSelectedOrder(null);
-        setSelectedLine("");
+        setGeselecteerdeOrder(null);
+        setGekozenLijn("");
+        setPiklijstId("");
       } else {
-        alert("Fout bij doorsturen order");
+        alert("Fout bij opslaan van de order");
       }
     } catch (err) {
-      console.error("Fout bij fetch PUT:", err);
+      console.error("Fout bij versturen van order:", err);
     }
   };
 
-  const calculateBlocks = (product, amount) => {
-    const recipe = recipePerProduct[product];
+  const berekenBlokken = (product, aantal) => {
+    const recept = receptPerProduct[product];
     return {
-      rood: recipe.rood * amount,
-      blauw: recipe.blauw * amount,
-      geel: recipe.geel * amount,
+      rood: recept.rood * aantal,
+      blauw: recept.blauw * aantal,
+      geel: recept.geel * aantal,
     };
   };
 
-  const handleRefresh = () => window.location.reload();
+  const vernieuwPagina = () => window.location.reload();
 
   return (
     <div className={styles.container}>
       <div className={styles.refreshContainer}>
-        <button className={styles.refreshButton} onClick={handleRefresh}>
-          Pagina verversen
+        <button className={styles.refreshButton} onClick={vernieuwPagina}>
+          Ververs pagina
         </button>
       </div>
 
       <h1 className={styles.title}>Planning Dashboard</h1>
 
-      {/* openstaande orders */}
+      {/* Openstaande orders */}
       <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
           <div className={styles.leftGroup}>
-            <div>Order #</div>
+            <div>Ordernummer</div>
             <div>Product</div>
-            <div>Hoeveel</div>
+            <div>Aantal</div>
           </div>
           <div className={styles.rightGroup}>
-            <div>Status</div>
-            <div>Actie</div>
+            <div>Piklijst</div>
+            <div>Productielijn</div>
           </div>
         </div>
 
         {orders
-          .filter((o) => !o.doorgestuurd)
+          .filter((o) => !o.picklist_id || !o.production_line)
           .map((order) => (
             <div key={order.id} className={styles.tableRow}>
               <div className={styles.leftGroup}>
-                <div>{order.orderNummer}</div>
-                <div>{order.productType}</div>
-                <div>{order.hoeveelheid}</div>
+                <div>{order.id}</div>
+                <div>{order.product_name}</div>
+                <div>{order.quantity}</div>
               </div>
               <div className={styles.rightGroup}>
-                <div className={styles.badgeRed}>Wachtend</div>
+                <div>-</div>
                 <button
                   className={styles.button}
-                  onClick={() => setSelectedOrder(order)}
+                  onClick={() => setGeselecteerdeOrder(order)}
                 >
                   Invullen
                 </button>
@@ -105,19 +109,19 @@ function PlanningPage() {
           ))}
       </div>
 
-      {/* bestelformulier */}
-      {selectedOrder && (
+      {/* Formulier invullen */}
+      {geselecteerdeOrder && (
         <div className={styles.tableContainer}>
-          <h3>Bestelformulier invullen</h3>
-          <p>Order: {selectedOrder.orderNummer}</p>
-          <p>Product: {selectedOrder.productType}</p>
-          <p>Aantal: {selectedOrder.hoeveelheid}</p>
-          <p>Blokjes totaal:</p>
+          <h3>Order invullen</h3>
+          <p>Ordernummer: {geselecteerdeOrder.id}</p>
+          <p>Product: {geselecteerdeOrder.product_name}</p>
+          <p>Aantal: {geselecteerdeOrder.quantity}</p>
+          <p>Benodigde blokken:</p>
           <ul>
             {Object.entries(
-              calculateBlocks(
-                selectedOrder.productType,
-                selectedOrder.hoeveelheid
+              berekenBlokken(
+                geselecteerdeOrder.product_name,
+                geselecteerdeOrder.quantity
               )
             ).map(([kleur, aantal]) => (
               <li key={kleur}>
@@ -126,7 +130,17 @@ function PlanningPage() {
             ))}
           </ul>
 
-          <label>Kies productielijn:</label>
+          <label>Piklijst ID:</label>
+          <input
+            type="text"
+            value={piklijstId}
+            onChange={(e) => setPiklijstId(e.target.value)}
+            placeholder="Bijv. PKL-001"
+          />
+
+          <br /><br />
+
+          <label>Kies een productielijn:</label>
           <div>
             {["A", "B"].map((lijn) => (
               <label key={lijn} style={{ marginRight: "1rem" }}>
@@ -134,8 +148,8 @@ function PlanningPage() {
                   type="radio"
                   name="productielijn"
                   value={lijn}
-                  checked={selectedLine === lijn}
-                  onChange={(e) => setSelectedLine(e.target.value)}
+                  checked={gekozenLijn === lijn}
+                  onChange={(e) => setGekozenLijn(e.target.value)}
                 />
                 Lijn {lijn}
               </label>
@@ -144,29 +158,29 @@ function PlanningPage() {
 
           <button
             className={styles.button}
-            onClick={() => handleForward(selectedOrder.id)}
-            disabled={!selectedLine}
+            onClick={() => verwerkOrder(geselecteerdeOrder.id)}
+            disabled={!gekozenLijn || !piklijstId}
           >
-            Order verzenden
+            Verzend order
           </button>
         </div>
       )}
 
-      {/* verwerkte orders */}
+      {/* Verwerkte orders */}
       <div className={styles.tableContainer}>
         <h3>Verwerkte orders</h3>
         {orders
-          .filter((o) => o.doorgestuurd)
+          .filter((o) => o.picklist_id && o.production_line)
           .map((order) => (
             <div key={order.id} className={styles.tableRow}>
               <div className={styles.leftGroup}>
-                <div>{order.orderNummer}</div>
-                <div>{order.productType}</div>
-                <div>{order.hoeveelheid}</div>
+                <div>{order.id}</div>
+                <div>{order.product_name}</div>
+                <div>{order.quantity}</div>
               </div>
               <div className={styles.rightGroup}>
-                <div className={styles.badgeBlue}>Verzonden</div>
-                <div>Lijn {order.productielijn}</div>
+                <div>Piklijst: {order.picklist_id}</div>
+                <div>Lijn: {order.production_line}</div>
               </div>
             </div>
           ))}
