@@ -1,4 +1,5 @@
 from extensions import db
+from datetime import datetime
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -7,14 +8,15 @@ class Order(db.Model):
     customer_id = db.Column(db.Integer, nullable=False)
     product_name = db.Column(db.String(10), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String(50), default='in_behandeling')
-    created_at = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(50), default='in_behandeling')  # je zou dit ook een ENUM kunnen maken
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    picklist = db.Column(db.String(10), nullable=True)  # A, B of C
+    production_line = db.Column(db.String(50), nullable=True)
 
     def update_status(self, status):
         self.status = status
 
     def is_valid(self):
-        # Check of product_name geldig is en hoeveelheid tussen 1 en 3 ligt
         return self.product_name in ["A", "B", "C"] and 1 <= self.quantity <= 3
 
     def to_dict(self):
@@ -24,5 +26,7 @@ class Order(db.Model):
             "product_name": self.product_name,
             "quantity": self.quantity,
             "status": self.status,
-            "created_at": self.created_at
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "picklist": self.picklist,
+            "production_line": self.production_line
         }

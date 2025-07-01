@@ -20,14 +20,17 @@ def simulate_forward_order(data):
 def fetch_all_orders():
     return Order.query.all()
 
-# Update bestaande order
+# Update bestaande order met flexibele velden
 def update_order(order_id, data):
     order = Order.query.get(order_id)
     if order:
+        # Update alleen als veld in data zit, anders behoud oud veld
         order.product_name = data.get("product_name", order.product_name)
         order.quantity = data.get("quantity", order.quantity)
         order.created_at = data.get("created_at", order.created_at)
         order.status = data.get("status", order.status)
+        order.picklist = data.get("picklist", order.picklist)
+        order.production_line = data.get("production_line", order.production_line)
         db.session.commit()
         return order
     return None
