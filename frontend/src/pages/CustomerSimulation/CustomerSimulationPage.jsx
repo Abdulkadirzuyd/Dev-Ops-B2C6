@@ -24,7 +24,7 @@ export default function CustomerSimulationPage() {
     }
 
     const payload = {
-      id: orderId.trim(),
+      customer_id: orderId.trim(),
       product_name: productName,
       quantity: Number(quantity),
       created_at: new Date().toISOString().split('T')[0],

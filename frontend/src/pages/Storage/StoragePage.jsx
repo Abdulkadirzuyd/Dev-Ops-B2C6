@@ -1,136 +1,149 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./StorageStyle.module.css";
 
 const StoragePage = () => {
-  const [selectedColor, setSelectedColor] = useState(""); // filterkleur
-  const [orders, setOrders] = useState([
-    { amount: 20, date: "2025-06-01", colors: ["grey"] },
-    { amount: 10, date: "2025-06-02", colors: ["blue"] },
-    { amount: 15, date: "2025-06-03", colors: ["red"] },
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [form, setForm] = useState({
+    red: "",
+    blue: "",
+    grey: "",
+  });
+  const [loading, setLoading] = useState(true);
 
-  // Formulier state
-  const [formColors, setFormColors] = useState([]);
-  const [formAmount, setFormAmount] = useState("");
+  // Haal orders op bij laden
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/inventory");
+        if (!res.ok) {
+          throw new Error("Fout bij ophalen orders");
+        }
+        const data = await res.json();
 
-  const toggleFormColor = (color) => {
-    setFormColors((prev) =>
-      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
-    );
-  };
-
-  const handleOrderSubmit = (e) => {
-    e.preventDefault();
-
-    if (!formAmount || isNaN(formAmount) || formAmount <= 0) return;
-    if (formColors.length === 0) return; // Minstens 1 kleur selecteren
-
-    const newOrder = {
-      amount: parseInt(formAmount),
-      date: new Date().toISOString().split("T")[0],
-      colors: formColors,
+        // Optioneel: data aanpassen als backend anders structuur heeft
+        setOrders(
+          data.map((item) => ({
+            id: item.id,
+            red: item.red,
+            blue: item.blue,
+            grey: item.grey,
+            date: item.created_at || new Date().toISOString().split("T")[0],
+          }))
+        );
+      } catch (err) {
+        console.error(err);
+        alert("Kon orders niet laden");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setOrders([newOrder, ...orders]);
-    setFormAmount("");
-    setFormColors([]);
+    fetchOrders();
+  }, []);
+
+  const handleChange = (color, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [color]: value,
+    }));
   };
 
-  // Filter op kleur
-  const filteredOrders = selectedColor
-    ? orders.filter((o) => o.colors.includes(selectedColor))
-    : orders;
+  const handleOrderSubmit = async (e) => {
+    e.preventDefault();
 
-  // Sorteer op datum (nieuwste eerst)
-  const sortedOrders = filteredOrders
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    const hasAmount = Object.values(form).some((val) => parseInt(val) > 0);
+    if (!hasAmount) {
+      alert("Vul minimaal één kleur in met een hoeveelheid groter dan 0");
+      return;
+    }
 
-  const handleRefresh = () => {
-    window.location.reload();
+    const newOrderPayload = {
+      red: parseInt(form.red) || 0,
+      blue: parseInt(form.blue) || 0,
+      grey: parseInt(form.grey) || 0,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/inventory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newOrderPayload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert("Fout bij opslaan order: " + (errorData.reason || "Onbekende fout"));
+        return;
+      }
+
+      const result = await response.json();
+
+      const newOrder = {
+        id: result.id || orders.length + 1,
+        ...newOrderPayload,
+        date: new Date().toISOString().split("T")[0],
+      };
+
+      setOrders([newOrder, ...orders]);
+      setForm({ red: "", blue: "", grey: "" });
+    } catch (error) {
+      console.error("Error bij opslaan:", error);
+      alert("Kon order niet opslaan, probeer het later opnieuw.");
+    }
   };
+
+  if (loading) {
+    return <div className={styles.container}>Laden...</div>;
+  }
 
   return (
-    <div className={styles.storageContainer}>
-      <div className={styles.refreshContainer}>
-        <button onClick={handleRefresh} className={styles.refreshButton}>
-          Pagina verversen
-        </button>
-      </div>
-
-      <div className={styles.controls}>
-        {["grey", "blue", "red"].map((color) => (
-          <button
-            key={color}
-            className={`${styles.button} ${styles[color]} ${
-              selectedColor === color ? styles.active : ""
-            }`}
-            onClick={() => setSelectedColor(color)}
-          >
-            {color.charAt(0).toUpperCase() + color.slice(1)}
-          </button>
-        ))}
-        <button
-          className={`${styles.button} ${styles.red}`}
-          onClick={() => setSelectedColor("")}
-        >
-          Alles tonen
-        </button>
-      </div>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Nieuwe bestelling</h2>
 
       <form className={styles.form} onSubmit={handleOrderSubmit}>
-        <div className={styles.colorSelect}>
-          {["grey", "blue", "red"].map((color) => (
-            <label key={color}>
-              <input
-                type="checkbox"
-                value={color}
-                checked={formColors.includes(color)}
-                onChange={() => toggleFormColor(color)}
-              />
-              {color}
-            </label>
-          ))}
-        </div>
-
-        <label>
-          Aantal blokken:
+        {["red", "blue", "grey"].map((color) => (
           <input
-            className={styles.coloredInput}
+            key={color}
             type="number"
-            min="1"
-            value={formAmount}
-            onChange={(e) => setFormAmount(e.target.value)}
+            min="0"
+            placeholder={color.charAt(0).toUpperCase() + color.slice(1)}
+            className={styles.input}
+            value={form[color]}
+            onChange={(e) => handleChange(color, e.target.value)}
           />
-        </label>
+        ))}
 
-        <button type="submit" className={`${styles.button} ${styles.red}`}>
+        <button type="submit" className={styles.button}>
           Bestellen
         </button>
       </form>
 
-      <div className={styles.table}>
+      <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
-          <div>Aantal blokken</div>
-          <div>Besteldatum</div>
-          <div>Kleuren</div>
+          <div className={styles.leftGroup}>
+            <div>ID</div>
+            <div>Red</div>
+            <div>Blue</div>
+            <div>Grey</div>
+          </div>
+          <div className={styles.rightGroup}>
+            <div>Datum</div>
+          </div>
         </div>
 
-        {sortedOrders.length > 0 ? (
-          sortedOrders.map((order, i) => (
-            <div className={styles.tableRow} key={i}>
-              <div>{order.amount}</div>
-              <div>{order.date}</div>
-              <div>{order.colors.join(", ")}</div>
+        {orders.map((order) => (
+          <div key={order.id} className={styles.tableRow}>
+            <div className={styles.leftGroup}>
+              <div>{order.id}</div>
+              <div>{order.red}</div>
+              <div>{order.blue}</div>
+              <div>{order.grey}</div>
             </div>
-          ))
-        ) : (
-          <div className={styles.tableRow}>
-            <div>Geen bestellingen gevonden.</div>
-            <div></div>
-            <div></div>
+            <div className={styles.rightGroup}>
+              <div>{order.date}</div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

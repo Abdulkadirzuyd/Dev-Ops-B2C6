@@ -17,14 +17,14 @@ services:
       - db
     restart: always
     environment:
-      - SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:password1234@db:3306/DBSim
+      - SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:password123@db:3306/DBSim
 
   db:
     image: mysql:8
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: password1234
+      MYSQL_ROOT_PASSWORD: password123
       MYSQL_DATABASE: DBSim
     volumes:
       - db_data:/var/lib/mysql

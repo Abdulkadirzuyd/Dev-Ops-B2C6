@@ -16,7 +16,7 @@ def create_app():
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     # Zet hier de juiste connectiestring hardcoded:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password1234@172.201.187.117:3306/simulatie_db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password123@172.201.187.117:3306/simulatie_db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
