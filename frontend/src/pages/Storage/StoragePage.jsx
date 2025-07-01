@@ -2,135 +2,95 @@ import React, { useState } from "react";
 import styles from "./StorageStyle.module.css";
 
 const StoragePage = () => {
-  const [selectedColor, setSelectedColor] = useState(""); // filterkleur
   const [orders, setOrders] = useState([
-    { amount: 20, date: "2025-06-01", colors: ["grey"] },
-    { amount: 10, date: "2025-06-02", colors: ["blue"] },
-    { amount: 15, date: "2025-06-03", colors: ["red"] },
+    {
+      id: 1,
+      red: 20,
+      blue: 30,
+      grey: 20,
+      date: "2025-06-30",
+    },
   ]);
 
-  // Formulier state
-  const [formColors, setFormColors] = useState([]);
-  const [formAmount, setFormAmount] = useState("");
+  const [form, setForm] = useState({
+    red: "",
+    blue: "",
+    grey: "",
+  });
 
-  const toggleFormColor = (color) => {
-    setFormColors((prev) =>
-      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
-    );
+  const handleChange = (color, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [color]: value,
+    }));
   };
 
   const handleOrderSubmit = (e) => {
     e.preventDefault();
 
-    if (!formAmount || isNaN(formAmount) || formAmount <= 0) return;
-    if (formColors.length === 0) return; // Minstens 1 kleur selecteren
+    const hasAmount = Object.values(form).some((val) => parseInt(val) > 0);
+    if (!hasAmount) return;
 
     const newOrder = {
-      amount: parseInt(formAmount),
+      id: orders.length + 1,
+      red: parseInt(form.red) || 0,
+      blue: parseInt(form.blue) || 0,
+      grey: parseInt(form.grey) || 0,
       date: new Date().toISOString().split("T")[0],
-      colors: formColors,
     };
 
     setOrders([newOrder, ...orders]);
-    setFormAmount("");
-    setFormColors([]);
-  };
-
-  // Filter op kleur
-  const filteredOrders = selectedColor
-    ? orders.filter((o) => o.colors.includes(selectedColor))
-    : orders;
-
-  // Sorteer op datum (nieuwste eerst)
-  const sortedOrders = filteredOrders
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  const handleRefresh = () => {
-    window.location.reload();
+    setForm({ red: "", blue: "", grey: "" });
   };
 
   return (
-    <div className={styles.storageContainer}>
-      <div className={styles.refreshContainer}>
-        <button onClick={handleRefresh} className={styles.refreshButton}>
-          Pagina verversen
-        </button>
-      </div>
-
-      <div className={styles.controls}>
-        {["grey", "blue", "red"].map((color) => (
-          <button
-            key={color}
-            className={`${styles.button} ${styles[color]} ${
-              selectedColor === color ? styles.active : ""
-            }`}
-            onClick={() => setSelectedColor(color)}
-          >
-            {color.charAt(0).toUpperCase() + color.slice(1)}
-          </button>
-        ))}
-        <button
-          className={`${styles.button} ${styles.red}`}
-          onClick={() => setSelectedColor("")}
-        >
-          Alles tonen
-        </button>
-      </div>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Nieuwe bestelling</h2>
 
       <form className={styles.form} onSubmit={handleOrderSubmit}>
-        <div className={styles.colorSelect}>
-          {["grey", "blue", "red"].map((color) => (
-            <label key={color}>
-              <input
-                type="checkbox"
-                value={color}
-                checked={formColors.includes(color)}
-                onChange={() => toggleFormColor(color)}
-              />
-              {color}
-            </label>
-          ))}
-        </div>
-
-        <label>
-          Aantal blokken:
+        {["red", "blue", "grey"].map((color) => (
           <input
-            className={styles.coloredInput}
+            key={color}
             type="number"
-            min="1"
-            value={formAmount}
-            onChange={(e) => setFormAmount(e.target.value)}
+            min="0"
+            placeholder={color.charAt(0).toUpperCase() + color.slice(1)}
+            className={styles.input}
+            value={form[color]}
+            onChange={(e) => handleChange(color, e.target.value)}
           />
-        </label>
+        ))}
 
-        <button type="submit" className={`${styles.button} ${styles.red}`}>
+        <button type="submit" className={styles.button}>
           Bestellen
         </button>
       </form>
 
-      <div className={styles.table}>
+      <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
-          <div>Aantal blokken</div>
-          <div>Besteldatum</div>
-          <div>Kleuren</div>
+          <div className={styles.leftGroup}>
+            <div>ID</div>
+            <div>Red</div>
+            <div>Blue</div>
+            <div>Grey</div>
+          </div>
+          <div className={styles.rightGroup}>
+            <div>Datum</div>
+          </div>
         </div>
 
-        {sortedOrders.length > 0 ? (
-          sortedOrders.map((order, i) => (
-            <div className={styles.tableRow} key={i}>
-              <div>{order.amount}</div>
-              <div>{order.date}</div>
-              <div>{order.colors.join(", ")}</div>
+        {orders.map((order) => (
+          <div key={order.id} className={styles.tableRow}>
+            <div className={styles.leftGroup}>
+              <div>{order.id}</div>
+              <div>{order.red}</div>
+              <div>{order.blue}</div>
+              <div>{order.grey}</div>
             </div>
-          ))
-        ) : (
-          <div className={styles.tableRow}>
-            <div>Geen bestellingen gevonden.</div>
-            <div></div>
-            <div></div>
+            <div className={styles.rightGroup}>
+              <div>{order.date}</div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
