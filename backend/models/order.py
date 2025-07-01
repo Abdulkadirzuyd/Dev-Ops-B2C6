@@ -10,7 +10,7 @@ class Order(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(50), default='in_behandeling')  # je zou dit ook een ENUM kunnen maken
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    picklist_id = db.Column(db.String(50), nullable=True)
+    picklist = db.Column(db.String(10), nullable=True)  # A, B of C
     production_line = db.Column(db.String(50), nullable=True)
 
     def update_status(self, status):
@@ -27,6 +27,6 @@ class Order(db.Model):
             "quantity": self.quantity,
             "status": self.status,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "picklist_id": self.picklist_id,
+            "picklist": self.picklist,
             "production_line": self.production_line
         }

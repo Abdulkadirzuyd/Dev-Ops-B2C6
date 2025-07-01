@@ -5,7 +5,7 @@ function PlanningPage() {
   const [orders, setOrders] = useState([]);
   const [geselecteerdeOrder, setGeselecteerdeOrder] = useState(null);
   const [gekozenLijn, setGekozenLijn] = useState("");
-  const [piklijstId, setPiklijstId] = useState("");
+  const [gekozenPiklijst, setGekozenPiklijst] = useState("");
 
   const receptPerProduct = {
     A: { rood: 3, blauw: 2, geel: 1 },
@@ -22,9 +22,9 @@ function PlanningPage() {
 
   const verwerkOrder = async (orderId) => {
     const aangepasteOrder = {
-      picklist_id: piklijstId,
-      production_line: gekozenLijn,
-    };
+  picklist: gekozenPiklijst,
+  production_line: gekozenLijn,
+};
 
     try {
       const response = await fetch(
@@ -130,13 +130,22 @@ function PlanningPage() {
             ))}
           </ul>
 
-          <label>Piklijst ID:</label>
-          <input
-            type="text"
-            value={piklijstId}
-            onChange={(e) => setPiklijstId(e.target.value)}
-            placeholder="Bijv. PKL-001"
-          />
+          <label>Kies een piklijst:</label>
+          <div>
+            {["A", "B", "C"].map((optie) => (
+              <label key={optie} style={{ marginRight: "1rem" }}>
+                <input
+                  type="radio"
+                  name="piklijst"
+                  value={optie}
+                  checked={gekozenPiklijst === optie}
+                  onChange={(e) => setGekozenPiklijst(e.target.value)}
+                />
+                Piklijst {optie}
+              </label>
+          ))}
+        </div>
+
 
           <br /><br />
 
@@ -159,7 +168,7 @@ function PlanningPage() {
           <button
             className={styles.button}
             onClick={() => verwerkOrder(geselecteerdeOrder.id)}
-            disabled={!gekozenLijn || !piklijstId}
+            disabled={!gekozenLijn || !gekozenPiklijst}
           >
             Verzend order
           </button>
@@ -179,7 +188,7 @@ function PlanningPage() {
                 <div>{order.quantity}</div>
               </div>
               <div className={styles.rightGroup}>
-                <div>Piklijst: {order.picklist_id}</div>
+                <div>Piklijst: {order.picklist}</div>
                 <div>Lijn: {order.production_line}</div>
               </div>
             </div>

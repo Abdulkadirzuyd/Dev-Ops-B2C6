@@ -64,7 +64,7 @@ def update_order_from_planner(order_id):
 
     # Alleen dingen die de planner mag aanpassen
     order.status = data.get("status", order.status)
-    order.picklist_id = data.get("picklist_id", order.picklist_id)
+    order.picklist = data.get("picklist", order.picklist)
     order.production_line = data.get("production_line", order.production_line)
 
     db.session.commit()
@@ -83,7 +83,7 @@ def get_orders_for_planner():
             "quantity": order.quantity,
             "status": order.status,
             "created_at": order.created_at,
-            "picklist_id": order.picklist_id,
+            "picklist": order.picklist,
             "production_line": order.production_line
 
         })
