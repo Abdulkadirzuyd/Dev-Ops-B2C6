@@ -13,8 +13,6 @@ import C_bovenprofiel from "../../assets/C-bovenprofiel.png";
 import C_zijkant from "../../assets/C-zijprofiel.png";
 import C_intern from "../../assets/C-Model.png";
 
-
-
 const tabs = [
   {
     name: "Motor A",
@@ -69,6 +67,7 @@ const ProductionPage = () => {
         ))}
       </div>
 
+      {/*
       <div className={styles.tableContainer}>
         <h2>Orders voor {currentTab.name}</h2>
         <div className={styles.table}>
@@ -86,6 +85,7 @@ const ProductionPage = () => {
           ))}
         </div>
       </div>
+      */}
     </div>
   );
 };
