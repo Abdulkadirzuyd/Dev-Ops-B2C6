@@ -1,15 +1,16 @@
 from models.order import Order
 from extensions import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Maak nieuwe order aan (Word gebruikt op klant simulatie pagina)
 def simulate_forward_order(data):
+    created_at = data.get("created_at") or datetime.now(timezone.utc).isoformat()
     new_order = Order(
-        id=data["id"],
+        customer_id=data["customer_id"],
         product_name=data["product_name"],
         quantity=data["quantity"],
-        created_at=data.get("created_at", datetime.now(datetime.timezone.utc)),
-        status="Pending"
+        created_at=created_at,
+        status=data.get("status") or "in_behandeling"
     )
     db.session.add(new_order)
     db.session.commit()

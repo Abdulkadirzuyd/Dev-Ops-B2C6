@@ -3,7 +3,8 @@ from extensions import db
 class Order(db.Model):
     __tablename__ = 'orders'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    customer_id = db.Column(db.Integer, nullable=False)
     product_name = db.Column(db.String(10), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(50), default='in_behandeling')
@@ -19,6 +20,7 @@ class Order(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "customer_id": self.customer_id,
             "product_name": self.product_name,
             "quantity": self.quantity,
             "status": self.status,

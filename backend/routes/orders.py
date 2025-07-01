@@ -15,6 +15,7 @@ def get_orders():
     for order in orders:
         result.append({
             "id": order.id,
+            "customer_id": order.customer_id,
             "product_name": order.product_name,
             "quantity": order.quantity,
             "created_at": order.created_at,
@@ -51,8 +52,11 @@ def delete_order_route(order_id):
 def create_order():
     data = request.get_json()
 
-    if not data.get("id") or not data.get("product_name") or not data.get("quantity") or not data.get("created_at"):
-        return jsonify({"success": False, "reason": "Missing required fields"}), 400
+    required_fields = ["customer_id", "product_name", "quantity"]
+    missing = [f for f in required_fields if f not in data]
+
+    if missing:
+        return jsonify({"success": False, "reason": f"Missing fields: {', '.join(missing)}"}), 400
 
     try:
         new_order = simulate_forward_order(data)

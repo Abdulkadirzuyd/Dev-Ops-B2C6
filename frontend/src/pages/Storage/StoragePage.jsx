@@ -1,22 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./StorageStyle.module.css";
 
 const StoragePage = () => {
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      red: 20,
-      blue: 30,
-      grey: 20,
-      date: "2025-06-30",
-    },
-  ]);
-
+  const [orders, setOrders] = useState([]);
   const [form, setForm] = useState({
     red: "",
     blue: "",
     grey: "",
   });
+  const [loading, setLoading] = useState(true);
+
+  // Haal orders op bij laden
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/inventory");
+        if (!res.ok) {
+          throw new Error("Fout bij ophalen orders");
+        }
+        const data = await res.json();
+
+        // Optioneel: data aanpassen als backend anders structuur heeft
+        setOrders(
+          data.map((item) => ({
+            id: item.id,
+            red: item.red,
+            blue: item.blue,
+            grey: item.grey,
+            date: item.created_at || new Date().toISOString().split("T")[0],
+          }))
+        );
+      } catch (err) {
+        console.error(err);
+        alert("Kon orders niet laden");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const handleChange = (color, value) => {
     setForm((prev) => ({
@@ -25,23 +48,53 @@ const StoragePage = () => {
     }));
   };
 
-  const handleOrderSubmit = (e) => {
+  const handleOrderSubmit = async (e) => {
     e.preventDefault();
 
     const hasAmount = Object.values(form).some((val) => parseInt(val) > 0);
-    if (!hasAmount) return;
+    if (!hasAmount) {
+      alert("Vul minimaal één kleur in met een hoeveelheid groter dan 0");
+      return;
+    }
 
-    const newOrder = {
-      id: orders.length + 1,
+    const newOrderPayload = {
       red: parseInt(form.red) || 0,
       blue: parseInt(form.blue) || 0,
       grey: parseInt(form.grey) || 0,
-      date: new Date().toISOString().split("T")[0],
     };
 
-    setOrders([newOrder, ...orders]);
-    setForm({ red: "", blue: "", grey: "" });
+    try {
+      const response = await fetch("http://localhost:5000/inventory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newOrderPayload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert("Fout bij opslaan order: " + (errorData.reason || "Onbekende fout"));
+        return;
+      }
+
+      const result = await response.json();
+
+      const newOrder = {
+        id: result.id || orders.length + 1,
+        ...newOrderPayload,
+        date: new Date().toISOString().split("T")[0],
+      };
+
+      setOrders([newOrder, ...orders]);
+      setForm({ red: "", blue: "", grey: "" });
+    } catch (error) {
+      console.error("Error bij opslaan:", error);
+      alert("Kon order niet opslaan, probeer het later opnieuw.");
+    }
   };
+
+  if (loading) {
+    return <div className={styles.container}>Laden...</div>;
+  }
 
   return (
     <div className={styles.container}>
