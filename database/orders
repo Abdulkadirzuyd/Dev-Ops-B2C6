@@ -23,22 +23,13 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(255) DEFAULT NULL,
-  `quantity` int DEFAULT NULL,
-  `status` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `production_line_id` int DEFAULT NULL,
-  `account_manager_id` int DEFAULT NULL,
-  `planner_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_orders_production_line` (`production_line_id`),
-  KEY `fk_orders_account_manager` (`account_manager_id`),
-  KEY `fk_orders_planner` (`planner_id`),
-  CONSTRAINT `fk_orders_account_manager` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `fk_orders_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_orders_planner` FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `fk_orders_production_line` FOREIGN KEY (`production_line_id`) REFERENCES `production_lines` (`id`) ON DELETE SET NULL
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `customer_id` INT NOT NULL,
+  `product_name` VARCHAR(10) NOT NULL,
+  `quantity` INT NOT NULL,
+  `status` VARCHAR(50) DEFAULT 'in_behandeling',
+  `created_at` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
