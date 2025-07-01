@@ -14,7 +14,7 @@ function PlanningPage() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/planner/orders")
+    fetch("http://localhost:5000/orders")
       .then((res) => res.json())
       .then((data) => setOrders(data))
       .catch((err) => console.error("Fout bij ophalen van orders:", err));
@@ -22,28 +22,26 @@ function PlanningPage() {
 
   const verwerkOrder = async (orderId) => {
     const aangepasteOrder = {
-  picklist: gekozenPiklijst,
-  production_line: gekozenLijn,
-};
+      picklist: gekozenPiklijst,
+      production_line: gekozenLijn,
+    };
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/planner/orders/${orderId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(aangepasteOrder),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/orders/${orderId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(aangepasteOrder),
+      });
 
       if (response.ok) {
         const updated = await response.json();
+        console.log("Updated order from API:", updated);
         setOrders((prev) =>
-          prev.map((o) => (o.id === orderId ? updated.order : o))
+          prev.map((o) => (o.id === orderId ? updated : o))
         );
         setGeselecteerdeOrder(null);
         setGekozenLijn("");
-        setPiklijstId("");
+        setGekozenPiklijst("");
       } else {
         alert("Fout bij opslaan van de order");
       }
@@ -73,23 +71,23 @@ function PlanningPage() {
 
       <h1 className={styles.title}>Planning Dashboard</h1>
 
-      {/* Openstaande orders */}
-      <div className={styles.tableContainer}>
-        <div className={styles.tableHeader}>
-          <div className={styles.leftGroup}>
-            <div>Ordernummer</div>
-            <div>Product</div>
-            <div>Aantal</div>
+      <div className={styles.mainContent}>
+        {/* Orders */}
+        <div className={styles.tableContainer}>
+          <div className={styles.tableHeader}>
+            <div className={styles.leftGroup}>
+              <div>Ordernummer</div>
+              <div>Product</div>
+              <div>Aantal</div>
+            </div>
+            <div className={styles.rightGroup}>
+              <div>Piklijst</div>
+              <div>Productielijn</div>
+              <div>Acties</div>
+            </div>
           </div>
-          <div className={styles.rightGroup}>
-            <div>Piklijst</div>
-            <div>Productielijn</div>
-          </div>
-        </div>
 
-        {orders
-          .filter((o) => !o.picklist_id || !o.production_line)
-          .map((order) => (
+          {orders.map((order) => (
             <div key={order.id} className={styles.tableRow}>
               <div className={styles.leftGroup}>
                 <div>{order.id}</div>
@@ -97,38 +95,46 @@ function PlanningPage() {
                 <div>{order.quantity}</div>
               </div>
               <div className={styles.rightGroup}>
-                <div>-</div>
-                <button
-                  className={styles.button}
-                  onClick={() => setGeselecteerdeOrder(order)}
-                >
-                  Invullen
-                </button>
+                <div>{order.picklist || "-"}</div>
+                <div>{order.production_line || "-"}</div>
+                <div>
+                  <button
+                    className={styles.button}
+                    onClick={() => setGeselecteerdeOrder(order)}
+                  >
+                    Invullen
+                  </button>
+                </div>
               </div>
             </div>
           ))}
-      </div>
+        </div>
 
-      {/* Formulier invullen */}
-      {geselecteerdeOrder && (
-        <div className={styles.tableContainer}>
+        {/* Formulier altijd zichtbaar */}
+        <div className={styles.formContainer}>
           <h3>Order invullen</h3>
-          <p>Ordernummer: {geselecteerdeOrder.id}</p>
-          <p>Product: {geselecteerdeOrder.product_name}</p>
-          <p>Aantal: {geselecteerdeOrder.quantity}</p>
-          <p>Benodigde blokken:</p>
-          <ul>
-            {Object.entries(
-              berekenBlokken(
-                geselecteerdeOrder.product_name,
-                geselecteerdeOrder.quantity
-              )
-            ).map(([kleur, aantal]) => (
-              <li key={kleur}>
-                {kleur}: {aantal}
-              </li>
-            ))}
-          </ul>
+          {geselecteerdeOrder ? (
+            <>
+              <p>Ordernummer: {geselecteerdeOrder.id}</p>
+              <p>Product: {geselecteerdeOrder.product_name}</p>
+              <p>Aantal: {geselecteerdeOrder.quantity}</p>
+              <p>Benodigde blokken:</p>
+              <ul>
+                {Object.entries(
+                  berekenBlokken(
+                    geselecteerdeOrder.product_name,
+                    geselecteerdeOrder.quantity
+                  )
+                ).map(([kleur, aantal]) => (
+                  <li key={kleur}>
+                    {kleur}: {aantal}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>Klik op een order om te bewerken.</p>
+          )}
 
           <label>Kies een piklijst:</label>
           <div>
@@ -143,11 +149,10 @@ function PlanningPage() {
                 />
                 Piklijst {optie}
               </label>
-          ))}
-        </div>
+            ))}
+          </div>
 
-
-          <br /><br />
+          <br />
 
           <label>Kies een productielijn:</label>
           <div>
@@ -165,34 +170,18 @@ function PlanningPage() {
             ))}
           </div>
 
+          <br />
+
           <button
             className={styles.button}
-            onClick={() => verwerkOrder(geselecteerdeOrder.id)}
-            disabled={!gekozenLijn || !gekozenPiklijst}
+            onClick={() =>
+              geselecteerdeOrder && verwerkOrder(geselecteerdeOrder.id)
+            }
+            disabled={!gekozenLijn || !gekozenPiklijst || !geselecteerdeOrder}
           >
             Verzend order
           </button>
         </div>
-      )}
-
-      {/* Verwerkte orders */}
-      <div className={styles.tableContainer}>
-        <h3>Verwerkte orders</h3>
-        {orders
-          .filter((o) => o.picklist_id && o.production_line)
-          .map((order) => (
-            <div key={order.id} className={styles.tableRow}>
-              <div className={styles.leftGroup}>
-                <div>{order.id}</div>
-                <div>{order.product_name}</div>
-                <div>{order.quantity}</div>
-              </div>
-              <div className={styles.rightGroup}>
-                <div>Piklijst: {order.picklist}</div>
-                <div>Lijn: {order.production_line}</div>
-              </div>
-            </div>
-          ))}
       </div>
     </div>
   );

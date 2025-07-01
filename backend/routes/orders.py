@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from services.order_service import (
     simulate_forward_order,
     fetch_all_orders,
-    update_order_status,
+    update_order,
     delete_order
 )
 
@@ -19,26 +19,38 @@ def get_orders():
             "product_name": order.product_name,
             "quantity": order.quantity,
             "created_at": order.created_at,
-            "status": order.status
+            "status": order.status,
+            "picklist": order.picklist,
+            "production_line": order.production_line
         })
     return jsonify(result), 200
 
 @order_bp.route("/orders/<int:order_id>", methods=["PUT"])
-def update_order(order_id):
+def update_order_route(order_id):
     data = request.get_json()
-    print("Ontvangen data:", data)  # DEBUG: logt binnenkomende data
+    print("Ontvangen data:", data)  # Debug
 
+    # Valideer status als die aanwezig is
     status = data.get("status")
-
-    if status not in ["goedgekeurd", "doorgestuurd"]:
+    if status and status not in ["goedgekeurd", "doorgestuurd", "in_behandeling"]:
         return jsonify({"success": False, "reason": "Geen geldige status"}), 400
 
-    success = update_order_status(order_id, status)
+    updated_order = update_order(order_id, data)
 
-    if success:
-        return jsonify({"success": True}), 200
+    if updated_order:
+        return jsonify({
+            "id": updated_order.id,
+            "customer_id": updated_order.customer_id,
+            "product_name": updated_order.product_name,
+            "quantity": updated_order.quantity,
+            "created_at": updated_order.created_at,
+            "status": updated_order.status,
+            "picklist": updated_order.picklist,
+            "production_line": updated_order.production_line,
+        }), 200
     else:
         return jsonify({"success": False, "reason": "Order niet gevonden"}), 404
+
 
 
 @order_bp.route("/orders/<int:order_id>", methods=["DELETE"])
