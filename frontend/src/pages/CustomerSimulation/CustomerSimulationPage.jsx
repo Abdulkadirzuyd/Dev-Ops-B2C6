@@ -81,6 +81,7 @@ const handleAddOrder = async (e) => {
           <option value="A">Type A</option>
           <option value="B">Type B</option>
           <option value="C">Type C</option>
+          <option value="D">Onderhoud</option>
         </select>
 
         <input
