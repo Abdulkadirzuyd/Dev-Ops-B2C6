@@ -16,8 +16,20 @@ export default function OrderPage() {
       .catch((err) => console.error("Error fetching orders:", err));
   }, []);
 
+  // ✅ Helperfunctie om alleen noodzakelijke data te versturen
+  function getMinimalOrder(order, status) {
+    return {
+      product_name: order.product_name,
+      quantity: order.quantity,
+      customer_id: order.customer_id,
+      picklist: order.picklist,
+      production_line: order.production_line,
+      status: status
+    };
+  }
+
   const handleApprove = async (index, id) => {
-    const updatedOrder = { ...orders[index], status: "goedgekeurd" };
+    const updatedOrder = getMinimalOrder(orders[index], "goedgekeurd");
 
     try {
       const response = await fetch(`http://localhost:5000/orders/${id}`, {
@@ -28,7 +40,7 @@ export default function OrderPage() {
 
       if (response.ok) {
         const updated = [...orders];
-        updated[index] = updatedOrder;
+        updated[index] = { ...orders[index], ...updatedOrder }; // combineer voor frontend
         setOrders(updated);
       } else {
         alert("Error approving order");
@@ -39,7 +51,7 @@ export default function OrderPage() {
   };
 
   const handleForward = async (index, id) => {
-    const updatedOrder = { ...orders[index], status: "doorgestuurd" };
+    const updatedOrder = getMinimalOrder(orders[index], "doorgestuurd");
 
     try {
       const response = await fetch(`http://localhost:5000/orders/${id}`, {
@@ -50,7 +62,7 @@ export default function OrderPage() {
 
       if (response.ok) {
         const updated = [...orders];
-        updated[index] = updatedOrder;
+        updated[index] = { ...orders[index], ...updatedOrder };
         setOrders(updated);
       } else {
         alert("Error forwarding order");
@@ -108,7 +120,7 @@ export default function OrderPage() {
               </div>
               <div className={styles.rightGroup}>
                 <div>{order.created_at}</div>
-                  <div>
+                <div>
                   {order.status === "in_behandeling" && (
                     <button
                       className={styles.button}
