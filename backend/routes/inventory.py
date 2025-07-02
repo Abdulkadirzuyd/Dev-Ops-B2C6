@@ -27,7 +27,11 @@ def get_inventory_items():
         "id": item.id,
         "red": item.red,
         "blue": item.blue,
-        "grey": item.grey
+        "grey": item.grey,
+        "order_id": item.order_id,
+        "quantity": item.quantity,
+        "order_type": item.order_type,
+        "production_line": item.production_line
     } for item in items]), 200
 
 @inventory_bp.route("/inventory/<int:item_id>", methods=["PUT"])

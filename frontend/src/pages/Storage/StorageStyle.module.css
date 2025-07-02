@@ -24,6 +24,7 @@
   max-width: 700px;
 }
 
+/* Light mode input styling */
 .input,
 .select {
   padding: 0.5rem 0.75rem;
@@ -33,7 +34,7 @@
   min-width: 120px;
   background-color: #f9f9f9;  /*zelfde als tabel achtergrond*/
   color: black;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .input::placeholder {
@@ -44,6 +45,7 @@
 .select:focus {
   outline: none;
   background-color: #e6e6e6; /* iets donkerder bij focus */
+  color: black;
 }
 
 .select {
@@ -149,7 +151,7 @@
   outline: 2px solid #e81a31;
 }
 
-
+/* Dark mode styling */
 @media (prefers-color-scheme: dark) {
   .container {
     color: white;
@@ -168,6 +170,7 @@
   .input:focus,
   .select:focus {
     background-color: #333;
+    color: white;
   }
 
   .tableContainer {
@@ -237,4 +240,3 @@
 .refreshButton:hover {
   background-color: #e81a31;
 }
-
