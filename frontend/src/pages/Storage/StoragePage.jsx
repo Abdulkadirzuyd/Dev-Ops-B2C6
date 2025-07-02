@@ -7,6 +7,10 @@ const StoragePage = () => {
     red: "",
     blue: "",
     grey: "",
+    order_id: "",
+    quantity: "",
+    order_type: "",
+    production_line: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -20,13 +24,16 @@ const StoragePage = () => {
         }
         const data = await res.json();
 
-        // Optioneel: data aanpassen als backend anders structuur heeft
         setOrders(
           data.map((item) => ({
             id: item.id,
             red: item.red,
             blue: item.blue,
             grey: item.grey,
+            order_id: item.order_id,
+            quantity: item.quantity,
+            order_type: item.order_type,
+            production_line: item.production_line,
             date: item.created_at || new Date().toISOString().split("T")[0],
           }))
         );
@@ -41,17 +48,20 @@ const StoragePage = () => {
     fetchOrders();
   }, []);
 
-  const handleChange = (color, value) => {
+  const handleChange = (field, value) => {
     setForm((prev) => ({
       ...prev,
-      [color]: value,
+      [field]: value,
     }));
   };
 
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
 
-    const hasAmount = Object.values(form).some((val) => parseInt(val) > 0);
+    // Minimaal 1 kleur > 0
+    const hasAmount = ["red", "blue", "grey"].some(
+      (color) => parseInt(form[color]) > 0
+    );
     if (!hasAmount) {
       alert("Vul minimaal één kleur in met een hoeveelheid groter dan 0");
       return;
@@ -61,6 +71,10 @@ const StoragePage = () => {
       red: parseInt(form.red) || 0,
       blue: parseInt(form.blue) || 0,
       grey: parseInt(form.grey) || 0,
+      order_id: form.order_id || null,
+      quantity: form.quantity ? parseInt(form.quantity) : null,
+      order_type: form.order_type || null,
+      production_line: form.production_line || null,
     };
 
     try {
@@ -85,7 +99,15 @@ const StoragePage = () => {
       };
 
       setOrders([newOrder, ...orders]);
-      setForm({ red: "", blue: "", grey: "" });
+      setForm({
+        red: "",
+        blue: "",
+        grey: "",
+        order_id: "",
+        quantity: "",
+        order_type: "",
+        production_line: "",
+      });
     } catch (error) {
       console.error("Error bij opslaan:", error);
       alert("Kon order niet opslaan, probeer het later opnieuw.");
@@ -101,15 +123,15 @@ const StoragePage = () => {
       <h2 className={styles.title}>Nieuwe bestelling</h2>
 
       <form className={styles.form} onSubmit={handleOrderSubmit}>
-        {["red", "blue", "grey"].map((color) => (
+        {["red", "blue", "grey", "order_id", "quantity", "order_type", "production_line"].map((field) => (
           <input
-            key={color}
-            type="number"
-            min="0"
-            placeholder={color.charAt(0).toUpperCase() + color.slice(1)}
+            key={field}
+            type={field === "quantity" || ["red", "blue", "grey"].includes(field) ? "number" : "text"}
+            min={field === "quantity" || ["red", "blue", "grey"].includes(field) ? "0" : undefined}
+            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
             className={styles.input}
-            value={form[color]}
-            onChange={(e) => handleChange(color, e.target.value)}
+            value={form[field]}
+            onChange={(e) => handleChange(field, e.target.value)}
           />
         ))}
 
@@ -125,6 +147,10 @@ const StoragePage = () => {
             <div>Red</div>
             <div>Blue</div>
             <div>Grey</div>
+            <div>Order ID</div>
+            <div>Quantity</div>
+            <div>Type</div>
+            <div>Production line</div>
           </div>
           <div className={styles.rightGroup}>
             <div>Datum</div>
@@ -138,6 +164,10 @@ const StoragePage = () => {
               <div>{order.red}</div>
               <div>{order.blue}</div>
               <div>{order.grey}</div>
+              <div>{order.order_id || "-"}</div>
+              <div>{order.quantity ?? "-"}</div>
+              <div>{order.order_type || "-"}</div>
+              <div>{order.production_line || "-"}</div>
             </div>
             <div className={styles.rightGroup}>
               <div>{order.date}</div>

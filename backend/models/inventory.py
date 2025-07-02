@@ -8,5 +8,7 @@ class InventoryItem(db.Model):
     blue = db.Column(db.Integer, nullable=False)
     grey = db.Column(db.Integer, nullable=False)
 
-
-
+    order_id = db.Column(db.Integer, nullable=True)
+    quantity = db.Column(db.Integer, nullable=True)
+    order_type = db.Column(db.String(50), nullable=True)
+    production_line = db.Column(db.String(50), nullable=True)
