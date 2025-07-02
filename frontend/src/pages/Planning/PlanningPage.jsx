@@ -90,7 +90,7 @@ function PlanningPage() {
           {orders.map((order) => (
             <div key={order.id} className={styles.tableRow}>
               <div className={styles.leftGroup}>
-                <div>{order.id}</div>
+                <div>{order.customer_id}</div>
                 <div>{order.product_name}</div>
                 <div>{order.quantity}</div>
               </div>

@@ -256,3 +256,17 @@
   background-color: #e81a31;
 }
 
+.declineButton {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.declineButton:hover {
+  background-color: #c0392b;
+}
+
