@@ -32,7 +32,7 @@ def update_order_route(order_id):
 
     # Valideer status als die aanwezig is
     status = data.get("status")
-    if status and status not in ["goedgekeurd", "doorgestuurd", "in_behandeling"]:
+    if status and status not in ["goedgekeurd", "doorgestuurd", "in_behandeling", "afgewezen"]:
         return jsonify({"success": False, "reason": "Geen geldige status"}), 400
 
     updated_order = update_order(order_id, data)

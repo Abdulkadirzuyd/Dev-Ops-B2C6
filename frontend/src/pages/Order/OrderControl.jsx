@@ -16,7 +16,6 @@ export default function OrderPage() {
       .catch((err) => console.error("Error fetching orders:", err));
   }, []);
 
-  // ✅ Helperfunctie om alleen noodzakelijke data te versturen
   function getMinimalOrder(order, status) {
     return {
       product_name: order.product_name,
@@ -40,7 +39,7 @@ export default function OrderPage() {
 
       if (response.ok) {
         const updated = [...orders];
-        updated[index] = { ...orders[index], ...updatedOrder }; // combineer voor frontend
+        updated[index] = { ...orders[index], ...updatedOrder };
         setOrders(updated);
       } else {
         alert("Error approving order");
@@ -71,6 +70,29 @@ export default function OrderPage() {
       console.error("PUT error (forward):", err);
     }
   };
+
+  const handleDecline = async (index, id) => {
+  const updatedOrder = getMinimalOrder(orders[index], "afgewezen");
+
+    try {
+      const response = await fetch(`http://localhost:5000/orders/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedOrder),
+      });
+
+      if (response.ok) {
+        const updated = [...orders];
+        updated[index] = { ...orders[index], ...updatedOrder };
+        setOrders(updated);
+      } else {
+        alert("Error declining order");
+      }
+    } catch (err) {
+      console.error("PUT error (decline):", err);
+    }
+  };
+
 
   return (
     <div className={styles.container}>
@@ -107,14 +129,13 @@ export default function OrderPage() {
           .filter((order) =>
             [order.id, order.quantity, order.product_name]
               .join(" ")
-              .toString()
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           )
           .map((order, index) => (
             <div key={order.id} className={styles.tableRow}>
               <div className={styles.leftGroup}>
-                <div>{order.id}</div>
+                <div>{order.customer_id}</div>
                 <div>{order.quantity}</div>
                 <div>{order.product_name}</div>
               </div>
@@ -122,12 +143,20 @@ export default function OrderPage() {
                 <div>{order.created_at}</div>
                 <div>
                   {order.status === "in_behandeling" && (
-                    <button
-                      className={styles.button}
-                      onClick={() => handleApprove(index, order.id)}
-                    >
-                      Approve
-                    </button>
+                    <>
+                      <button
+                        className={styles.button}
+                        onClick={() => handleApprove(index, order.id)}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className={styles.declineButton}
+                        onClick={() => handleDecline(index, order.id)}
+                      >
+                        Decline
+                      </button>
+                    </>
                   )}
                   {order.status === "goedgekeurd" && (
                     <button
@@ -139,6 +168,9 @@ export default function OrderPage() {
                   )}
                   {order.status === "doorgestuurd" && (
                     <span className={styles.check}>✔</span>
+                  )}
+                  {order.status === "afgewezen" && (
+                    <span className={styles.cross}>✖</span>
                   )}
                 </div>
               </div>
