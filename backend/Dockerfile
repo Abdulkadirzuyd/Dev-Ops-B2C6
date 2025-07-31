@@ -1,5 +1,5 @@
 # Gebruik een lichte Python-image
-FROM python:3.11-slim
+FROM python:3.14.0rc1-slim
 
 # Zet werkdirectory in de container
 WORKDIR /app
